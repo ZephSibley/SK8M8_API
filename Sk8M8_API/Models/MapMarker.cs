@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Sk8M8_API.Models
 {
-    public class Location : BaseEntity
+    public class MapMarker : BaseEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
         public IPoint Point { get; set; }
+        public Client Creator { get; set;  }
     }
 }
