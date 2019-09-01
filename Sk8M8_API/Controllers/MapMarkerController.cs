@@ -17,6 +17,14 @@ namespace Sk8M8_API.Controllers
             this.Context = context;
         }
 
+        /// <summary>
+        /// Create a Map Marker
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="Latitude"></param>
+        /// <param name="Longitude"></param>
+        /// <returns>Success Json object</returns>
         public ActionResult Create(
             string name,
             string description,
@@ -34,13 +42,20 @@ namespace Sk8M8_API.Controllers
             };
             Context.MapMarker.Add(newMarker);
             Context.SaveChanges();
-
+            
             return Json(new
             {
                 success = true
             });
         }
 
+        /// <summary>
+        /// Finds all Map Markers within a radius to the given LatLong
+        /// </summary>
+        /// <param name="Latitude"></param>
+        /// <param name="Longitude"></param>
+        /// <param name="Radius"></param>
+        /// <returns>List of MapMarker IDs and Coords</returns>
         public ActionResult Find(
             double Latitude,
             double Longitude,
@@ -54,9 +69,25 @@ namespace Sk8M8_API.Controllers
 
             var discoveredMarkers = Context.MapMarker
                 .Where(row => row.Point.IsWithinDistance(currentLocation, Radius))
+                .Select(row => new { row.Id, row.Point })
                 .ToList();
             //.OrderBy(c => c.Location.Distance(currentLocation))
             return Json(discoveredMarkers);
+        }
+
+        /// <summary>
+        /// Single Map Marker Entry
+        /// </summary>
+        /// <param name="id">Map Marker ID</param>
+        /// <returns>All fields on one Map Marker</returns>
+        public ActionResult Details(
+            long id
+        )
+        {
+            var markerDetail = Context.MapMarker
+                .FirstOrDefault(row => row.Id == id);
+
+            return Json(markerDetail);
         }
     }
 }
