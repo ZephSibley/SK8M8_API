@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Sk8M8_API.Models;
+using SignalRChat.Hubs;
 
 namespace Sk8M8_API
 {
@@ -30,6 +31,7 @@ namespace Sk8M8_API
             services.AddEntityFrameworkNpgsql()
                .AddDbContext<SkateContext>()
                .BuildServiceProvider();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
