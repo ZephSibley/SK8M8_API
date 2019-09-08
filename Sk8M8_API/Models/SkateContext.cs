@@ -8,6 +8,11 @@ namespace Sk8M8_API.Models
 {
     public class SkateContext : DbContext
     {
+        public SkateContext(DbContextOptions<SkateContext> options) : base(options)
+        {
+
+        }
+
         public DbSet<Client> Client { get; set; }
         public DbSet<ClientLogin> ClientLogin { get; set; }
         public DbSet<MapMarker> MapMarker { get; set; }

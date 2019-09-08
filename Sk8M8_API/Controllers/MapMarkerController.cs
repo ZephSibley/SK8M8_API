@@ -27,7 +27,7 @@ namespace Sk8M8_API.Controllers
         /// <returns>Success Json object</returns>
         public ActionResult Create(
             string name,
-            string description,
+            string category,
             double Latitude,
             double Longitude
         )
@@ -36,9 +36,8 @@ namespace Sk8M8_API.Controllers
             var newMarker = new MapMarker()
             {
                 Name = name,
-                Description = description,
+                LocationCategory = category,
                 Point = geometryFactory.CreatePoint(new GeoAPI.Geometries.Coordinate(Latitude, Longitude)),
-                //Category = category, 
             };
             Context.MapMarker.Add(newMarker);
             Context.SaveChanges();
