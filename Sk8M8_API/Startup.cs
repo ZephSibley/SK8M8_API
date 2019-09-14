@@ -51,7 +51,10 @@ namespace Sk8M8_API
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvc( routes =>
+            {
+                routes.MapRoute("default", "{controller}/{action}/{id?}")
+            });
         }
     }
 }
