@@ -50,6 +50,7 @@ namespace Sk8M8_API
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc( routes =>
             {
