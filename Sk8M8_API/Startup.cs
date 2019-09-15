@@ -52,7 +52,14 @@ namespace Sk8M8_API
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
+
+            app.UseSignalR(hubs =>
+            {
+                hubs.MapHub<ChatHub>("/chat");
+            });
+
             app.UseMvc( routes =>
             {
                 routes.MapRoute("default", "{controller}/{action}/{id?}");
