@@ -62,10 +62,8 @@ namespace Sk8M8_API
                         IssuerSigningKey = SecurityKey
                     };
 
-                // We have to hook the OnMessageReceived event in order to
-                // allow the JWT authentication handler to read the access
-                // token from the query string when a WebSocket or 
-                // Server-Sent Events request comes in.
+                // Allow JWT Auth handler to read access tokens
+                // on incoming WebSocket/Server-Sent Event requests
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = context =>
