@@ -85,6 +85,14 @@ namespace Sk8M8_API
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.AllowAnyMethod().AllowAnyHeader()
+                    .WithOrigins("http://localhost:3000/") // CHANGEME in production
+                    .AllowCredentials();
+                }));
+
             services.AddSignalR();
 
             // Use Name as user identifier for SignalR
@@ -106,7 +114,7 @@ namespace Sk8M8_API
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
-
+            app.UseCors("CorsPolicy");
             app.UseSignalR(hubs =>
             {
                 hubs.MapHub<ChatHub>("/chat");
