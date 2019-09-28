@@ -10,25 +10,25 @@ namespace Sk8M8_API.Controllers
 {
     public class AccountController : Controller 
     {
-        private SkateContext Context;
+        private SkateContext _context;
 
         public AccountController(SkateContext context)
         {
-            this.Context = context;
+            _context = context;
         }
 
-        public ActionResult Create(Models.Client Client)
+        public ActionResult Create(Models.Client client)
         {
-            var ClientRecord = new Client()
+            var clientRecord = new Client()
             {
                 Username = Client.Username,
                 Password = Services.PasswordService.HashPassword(Client.Password),
                 Email = Client.Email
             };
 
-            Context.Client.Add(Client);
+            _context.Client.Add(client);
 
-            Context.SaveChanges();
+            _context.SaveChanges();
 
             return Json(
                 new Resources.BaseResultResource() { Success = true }
@@ -37,34 +37,33 @@ namespace Sk8M8_API.Controllers
 
         public ActionResult Login(Models.Client Client)
         {
-            var RelevantUser = Context.Client.FirstOrDefault<Client>(x => x.Username == Client.Username);
+            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Username == Client.Username);
 
-            if(RelevantUser == null)
+            if(relevantUser == null)
             {
                 throw new Exception("This user doesn't exist");
             }
 
-            var LoginSuccess = Services.PasswordService.CheckPassword(Client.Password, RelevantUser.Password);
+            var loginSuccess = Services.PasswordService.CheckPassword(Client.Password, relevantUser.Password);
 
-            var LoginToken = new Resources.LoginTokenResource()
+            var loginToken = new Resources.LoginTokenResource()
             {
-                Token = null,
                 Success = false
             };
 
-            Services.SessionManagementService SessionManagement = new Services.SessionManagementService(RelevantUser);
+            Services.SessionManagementService sessionManagement = new Services.SessionManagementService(relevantUser);
 
-
-            if (LoginSuccess == Enums.ValidatePasswordStatus.Valid)
+            if (loginSuccess == Enums.ValidatePasswordStatus.Valid)
             {
-                LoginToken.Token = SessionManagement.Encode();
-                LoginToken.Success = true;
+                sessionManagement.Authenticate();
+
+                loginToken.Success = true;
             }
 
-            Context.ClientLogin.Add(new ClientLogin() { Client = RelevantUser, IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
-            Context.SaveChanges();
+            _context.ClientLogin.Add(new ClientLogin() { Client = relevantUser, IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
+            _context.SaveChanges();
 
-            return Json(LoginToken);
+            return Json(loginToken);
         }
     }
 }

@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace Sk8M8_API.DataClasses
 {
-    public class UserToken
+    public class AppSettings
     {
-        public long ClientId { get; set; }
-        public long Exp { get; set; }
+        public string JwtSecret { get; set; }
     }
 }
