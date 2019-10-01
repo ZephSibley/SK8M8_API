@@ -16,6 +16,10 @@ using Sk8M8_API.Models;
 using Microsoft.IdentityModel.Tokens;
 using Sk8M8_API.DataClasses;
 using System.Text;
+using SignalRChat.Hubs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Sk8M8_API
 {
@@ -31,7 +35,6 @@ namespace Sk8M8_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddEntityFrameworkNpgsql()
                .AddDbContext<SkateContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
@@ -81,6 +84,12 @@ namespace Sk8M8_API
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
+            app.UseCors("CorsPolicy");
+            app.UseSignalR(hubs =>
+            {
+                hubs.MapHub<ChatHub>("/chat");
+            });
+
             app.UseMvc( routes =>
             {
                 routes.MapRoute("default", "{controller}/{action}/{id?}");
