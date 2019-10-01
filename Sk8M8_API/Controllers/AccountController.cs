@@ -11,10 +11,12 @@ namespace Sk8M8_API.Controllers
     public class AccountController : Controller 
     {
         private SkateContext _context;
+        private Services.ISessionManagementService _sessionManagementService;
 
-        public AccountController(SkateContext context)
+        public AccountController(SkateContext context, Services.ISessionManagementService sessionManagementService)
         {
             _context = context;
+            _sessionManagementService = sessionManagementService;
         }
 
         public ActionResult Create(Models.Client client)
@@ -51,11 +53,9 @@ namespace Sk8M8_API.Controllers
                 Success = false
             };
 
-            Services.SessionManagementService sessionManagement = new Services.SessionManagementService(relevantUser);
-
             if (loginSuccess == Enums.ValidatePasswordStatus.Valid)
             {
-                sessionManagement.Authenticate();
+                _sessionManagementService.Authenticate(relevantUser);
 
                 loginToken.Success = true;
             }
