@@ -86,6 +86,9 @@ namespace Sk8M8_API
             });
 
             services.AddScoped<Services.ISessionManagementService, Services.SessionManagementService>();
+
+            services.AddSignalR();
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
