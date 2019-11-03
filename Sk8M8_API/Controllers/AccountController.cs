@@ -39,7 +39,7 @@ namespace Sk8M8_API.Controllers
 
         public ActionResult Login(Models.Client Client)
         {
-            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Username == Client.Username);
+            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);
 
             if(relevantUser == null)
             {
