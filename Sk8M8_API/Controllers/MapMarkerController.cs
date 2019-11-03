@@ -85,6 +85,7 @@ namespace Sk8M8_API.Controllers
         )
         {
             var markerDetail = Context.MapMarker
+                .Select(row => new { row.Id, row.Name, row.LocationCategory, row.Creator.Username })
                 .FirstOrDefault(row => row.Id == id);
 
             return Json(markerDetail);
