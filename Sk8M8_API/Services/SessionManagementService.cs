@@ -24,7 +24,7 @@ namespace Sk8M8_API.Services
             _tokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public void Authenticate(Client client)
+        public string Authenticate(Client client)
         {
             var key = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
 
@@ -36,7 +36,7 @@ namespace Sk8M8_API.Services
             };
 
             var token = _tokenHandler.CreateToken(tokenDescriptor);
-            _tokenHandler.WriteToken(token);
+            return _tokenHandler.WriteToken(token);
         }
     }
 }

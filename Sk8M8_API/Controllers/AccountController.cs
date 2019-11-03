@@ -58,7 +58,7 @@ namespace Sk8M8_API.Controllers
 
             if (loginSuccess == Enums.ValidatePasswordStatus.Valid)
             {
-                _sessionManagementService.Authenticate(relevantUser);
+                loginToken.JwtToken = _sessionManagementService.Authenticate(relevantUser);
 
                 loginToken.Success = true;
             }
