@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sk8M8_API.Models;
@@ -19,6 +20,7 @@ namespace Sk8M8_API.Controllers
             _sessionManagementService = sessionManagementService;
         }
 
+        [AllowAnonymous]
         public ActionResult Create([FromBody] Client client)
         {
             var clientRecord = new Client()
@@ -37,6 +39,7 @@ namespace Sk8M8_API.Controllers
             );
         }
 
+        [AllowAnonymous]
         public ActionResult Login([FromBody] Client Client)
         {
             var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);

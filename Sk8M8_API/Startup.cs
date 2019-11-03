@@ -20,6 +20,8 @@ using SignalRChat.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Sk8M8_API
 {
@@ -88,7 +90,13 @@ namespace Sk8M8_API
             services.AddScoped<Services.ISessionManagementService, Services.SessionManagementService>();
 
             services.AddSignalR();
-            services.AddMvc();
+            services.AddMvc( o =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                o.Filters.Add(new AuthorizeFilter(policy));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
