@@ -26,6 +26,7 @@ namespace Sk8M8_API.Controllers
         /// <param name="Longitude"></param>
         /// <returns>Success Json object</returns>
         public ActionResult Create(
+            [FromBody]
             string name,
             string category,
             double Latitude,
