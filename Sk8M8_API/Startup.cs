@@ -63,8 +63,8 @@ namespace Sk8M8_API
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidateAudience = true
+                    ValidateIssuer = false,
+                    ValidateAudience = false
                 };
                 // Allow JWT Auth handler to read access tokens
                 // on incoming WebSocket/Server-Sent Event requests
@@ -73,7 +73,7 @@ namespace Sk8M8_API
                     OnMessageReceived = context =>
                     {
                         var accessToken = context.Request.Query["access_token"];
-
+                
                         // If the request is for our hub...
                         var path = context.HttpContext.Request.Path;
                         if (!string.IsNullOrEmpty(accessToken) &&
