@@ -19,7 +19,7 @@ namespace Sk8M8_API.Controllers
             _sessionManagementService = sessionManagementService;
         }
 
-        public ActionResult Create(Models.Client client)
+        public ActionResult Create([FromBody] Client client)
         {
             var clientRecord = new Client()
             {
@@ -37,7 +37,7 @@ namespace Sk8M8_API.Controllers
             );
         }
 
-        public ActionResult Login(Models.Client Client)
+        public ActionResult Login([FromBody] Client Client)
         {
             var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);
 
