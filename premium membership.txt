@@ -1,0 +1,3 @@
+create permission for standard and premium
+permissions would be associated wiht client in user permission table
+query table for access check (Client.UserPermission if not premium then no access)

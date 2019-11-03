@@ -1,0 +1,11 @@
+1) Use blob storage on Azure
+
+2) Accept user provided file in body of media submission
+
+3) Generate Guid (Guid.NewGuid.ToString()) to use as filename for user provided file (to ensure unique)
+
+4) Upload user provided file to Azure blob storage with the filename generated in 3)
+
+5) Create a Media record with the Guid in it (so you can retrieve the file again later)
+
+6) User can get the file from the Id by querying a download endpoint (eg: /Media/Retrieve/1). This will retrieve the record and use the attached Guid to locate and return the file
