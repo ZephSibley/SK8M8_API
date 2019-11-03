@@ -25,6 +25,7 @@ namespace Sk8M8_API.Controllers
         /// <param name="Latitude"></param>
         /// <param name="Longitude"></param>
         /// <returns>Success Json object</returns>
+        [HttpPost]
         public ActionResult Create(
             [FromBody]
             DataClasses.PointCreationRequest marker

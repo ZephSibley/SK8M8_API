@@ -20,6 +20,7 @@ namespace Sk8M8_API.Controllers
             _sessionManagementService = sessionManagementService;
         }
 
+        [HttpPost]
         [AllowAnonymous]
         public ActionResult Create([FromBody] Client client)
         {
@@ -39,6 +40,7 @@ namespace Sk8M8_API.Controllers
             );
         }
 
+        [HttpPost]
         [AllowAnonymous]
         public ActionResult Login([FromBody] Client Client)
         {
