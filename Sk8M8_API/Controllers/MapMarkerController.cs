@@ -27,18 +27,15 @@ namespace Sk8M8_API.Controllers
         /// <returns>Success Json object</returns>
         public ActionResult Create(
             [FromBody]
-            string name,
-            string category,
-            double Latitude,
-            double Longitude
+            DataClasses.PointCreationRequest marker
         )
         {
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
             var newMarker = new MapMarker()
             {
-                Name = name,
-                LocationCategory = category,
-                Point = geometryFactory.CreatePoint(new GeoAPI.Geometries.Coordinate(Latitude, Longitude)),
+                Name = marker.name,
+                LocationCategory = marker.category,
+                Point = geometryFactory.CreatePoint(new GeoAPI.Geometries.Coordinate(marker.Latitude, marker.Longitude)),
             };
             Context.MapMarker.Add(newMarker);
             Context.SaveChanges();
