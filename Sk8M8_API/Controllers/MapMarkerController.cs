@@ -31,11 +31,25 @@ namespace Sk8M8_API.Controllers
         )
         {
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+            var markerPoint = geometryFactory.CreatePoint(new GeoAPI.Geometries.Coordinate(marker.Latitude, marker.Longitude));
+
+            var proximityCheck = Context.MapMarker
+                .Where(row => row.Point.IsWithinDistance(markerPoint, 0.2))
+                .Any();
+            if (proximityCheck)
+            {
+                return Json(new
+                {
+                    success = false,
+                    msg = "Could not create: Too close to another marker."
+                });
+            }
+
             var newMarker = new MapMarker()
             {
                 Name = marker.name,
                 LocationCategory = marker.category,
-                Point = geometryFactory.CreatePoint(new GeoAPI.Geometries.Coordinate(marker.Latitude, marker.Longitude)),
+                Point = markerPoint,
             };
             Context.MapMarker.Add(newMarker);
             Context.SaveChanges();
