@@ -28,7 +28,7 @@ namespace Sk8M8_API.Controllers
                 Email = client.Email
             };
 
-            _context.Client.Add(client);
+            _context.Client.Add(clientRecord);
 
             _context.SaveChanges();
 
