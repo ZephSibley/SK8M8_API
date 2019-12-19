@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sk8M8_API.Models;
@@ -69,6 +70,22 @@ namespace Sk8M8_API.Controllers
             _context.SaveChanges();
 
             return Json(loginToken);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateAvatar(
+            [FromBody]
+            IFormFile image,
+            Client client
+            )
+        {
+            string filePath = await StorageUtils.StoreImageFile(image);
+
+            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == client.Email);
+
+            return Json(
+                new Resources.BaseResultResource() { Success = true }
+            );
         }
     }
 }
