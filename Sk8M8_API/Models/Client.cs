@@ -11,5 +11,6 @@ namespace Sk8M8_API.Models
         public string Geolocation { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        public string Avatar { get; set; }
     }
 }
