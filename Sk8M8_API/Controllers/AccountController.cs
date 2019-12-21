@@ -79,7 +79,7 @@ namespace Sk8M8_API.Controllers
             Client client
             )
         {
-            string filePath = await StorageUtils.StoreImageFile(image);
+            string filePath = await StorageUtils.StoreFile(image);
 
             var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == client.Email);
 

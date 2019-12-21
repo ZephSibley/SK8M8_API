@@ -36,20 +36,13 @@ namespace Sk8M8_API
                     return false;
             }
         }
-        public static async Task<string> StoreImageFile(IFormFile file)
-        {
-            // TODO: Strip EXIF
-
-            var filePath = Path.GetTempFileName();
-
-            using (var stream = System.IO.File.Create(filePath))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            return filePath;
-        }
-        public static async Task<string> StoreVideoFile(IFormFile file)
+        /// <summary>
+        /// Takes a file and stores it.
+        /// Expects processing, e.g. virus scanning, to have been done already.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns>The path to the file in storage</returns>
+        public static async Task<string> StoreFile(IFormFile file)
         {
             var filePath = Path.GetTempFileName();
 
