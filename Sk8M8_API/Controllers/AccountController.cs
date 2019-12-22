@@ -82,17 +82,17 @@ namespace Sk8M8_API.Controllers
             )
         {
 
-            var tempFilePath = await image.StoreTempFile();
+            var tempFile = await image.StoreTempFile();
             var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == client.Email);
 
-            if (relevantUser == null || !await tempFilePath.FileIsSafe())
+            if (relevantUser == null || !await tempFile.FileIsSafe())
             {
                 return Json(
                     new Resources.BaseResultResource() { Success = false }
                 );
             }
 
-            var filePath = await StorageUtils.StoreFile(tempFilePath.StripExif());
+            var filePath = await StorageUtils.StoreFile(tempFile.StripExif());
 
             relevantUser.Avatar = filePath.FullName;
             _context.Client.Update(relevantUser);
