@@ -63,12 +63,13 @@ namespace Sk8M8_API
 
                 return convertedVideo.ToFileInfo();
             }
-        /// Takes a file and stores it.
-        /// Expects processing, e.g. virus scanning, to have been done already.
+        }
+        /// <summary>
+        /// Takes a file in memory and stores it as a temp file.
         /// </summary>
         /// <param name="file"></param>
-        /// <returns>The path to the file in storage</returns>
-        public static async Task<string> StoreFile(IFormFile file)
+        /// <returns>The path to the file on disk</returns>
+        public static async Task<FileInfo> StoreTempFile(this IFormFile file)
         {
             var filePath = Path.GetTempFileName();
 
@@ -77,7 +78,18 @@ namespace Sk8M8_API
                 await file.CopyToAsync(stream);
             }
 
-            return filePath;
+            return new FileInfo(filePath);
+        }
+        public static async Task<FileInfo> StoreFile(FileInfo file)
+        {
+            var filePath = Path.GetTempFileName();
+
+            using (var stream = System.IO.File.Create(filePath))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return new FileInfo(filePath);
         }
     }
 }
