@@ -37,6 +37,32 @@ namespace Sk8M8_API
             }
         }
         /// <summary>
+        /// Transcodes video files to mp4
+        /// </summary>
+        /// <param name="file">Video File</param>
+        /// <returns>The transcoded file</returns>
+        public static FileInfo Transcode(this FileInfo file)
+        {
+            using (var encoder = new FFMpeg())
+            {
+                var video = VideoInfo.FromFileInfo(file);
+
+                FileInfo outputFile = new FileInfo(Path.GetTempFileName());
+
+                encoder.OnProgress += (percentage) => Console.WriteLine("Transcoding video: Progress {0}%", percentage);
+
+                VideoInfo convertedVideo = encoder.Convert(
+                    video,
+                    outputFile,
+                    VideoType.Mp4,
+                    Speed.UltraFast,
+                    VideoSize.Original,
+                    AudioQuality.Hd,
+                    true
+                );
+
+                return convertedVideo.ToFileInfo();
+            }
         /// Takes a file and stores it.
         /// Expects processing, e.g. virus scanning, to have been done already.
         /// </summary>
