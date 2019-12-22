@@ -83,8 +83,9 @@ namespace Sk8M8_API.Controllers
         {
 
             var tempFilePath = await image.StoreTempFile();
+            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == client.Email);
 
-            if (!await tempFilePath.FileIsSafe())
+            if (relevantUser == null || !await tempFilePath.FileIsSafe())
             {
                 return Json(
                     new Resources.BaseResultResource() { Success = false }
@@ -93,7 +94,10 @@ namespace Sk8M8_API.Controllers
 
             var filePath = await StorageUtils.StoreFile(tempFilePath.StripExif());
 
-            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == client.Email);
+            relevantUser.Avatar = filePath.FullName;
+            _context.Client.Update(relevantUser);
+
+            _context.SaveChanges();
 
             return Json(
                 new Resources.BaseResultResource() { Success = true }
