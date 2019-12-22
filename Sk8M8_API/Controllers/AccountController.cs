@@ -91,7 +91,7 @@ namespace Sk8M8_API.Controllers
                 );
             }
 
-            var filePath = await StorageUtils.StoreFile();
+            var filePath = await StorageUtils.StoreFile(tempFilePath.StripExif());
 
             var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == client.Email);
 

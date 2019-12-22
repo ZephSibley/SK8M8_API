@@ -69,6 +69,20 @@ namespace Sk8M8_API
             }
         }
         /// <summary>
+        /// Strips EXIF metadata from images
+        /// </summary>
+        /// <param name="file">Must be an image</param>
+        /// <returns>The same file, stripped of metadata</returns>
+        public static FileInfo StripExif(this FileInfo file)
+        {
+            ExifLibrary.ImageFile image = ExifLibrary.ImageFile.FromFile(file.FullName);
+
+            image.Properties.Clear();
+            image.Save(file.FullName);
+
+            return file;
+        }
+        /// <summary>
         /// Takes a file in memory and stores it as a temp file.
         /// </summary>
         /// <param name="file"></param>
