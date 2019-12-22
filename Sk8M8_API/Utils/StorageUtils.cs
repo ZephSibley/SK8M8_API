@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FFMpegCore;
+using FFMpegCore.Enums;
+using FFMpegCore.FFMPEG;
+using FFMpegCore.FFMPEG.Enums;
+using Microsoft.AspNetCore.Http;
 using nClam;
 using System;
 using System.IO;
@@ -8,17 +12,17 @@ using System.Threading.Tasks;
 namespace Sk8M8_API
 {
     // TODO: Configure Azure blob storage
-    public class StorageUtils
+    public static class StorageUtils
     {
         /// <summary>
         /// On-demand virus scanner for temp files.
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns>bool</returns>
-        public static async Task<bool> FileIsSafe(string filePath)
+        public static async Task<bool> FileIsSafe(this FileInfo file)
         {
             var clam = new ClamClient("localhost", 3310);
-            var scanResult = await clam.ScanFileOnServerAsync(filePath);
+            var scanResult = await clam.ScanFileOnServerAsync(file.FullName);
 
             switch (scanResult.Result)
             {

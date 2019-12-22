@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sk8M8_API.Models;
+using Sk8M8_API.Utils;
 
 namespace Sk8M8_API.Controllers
 {
@@ -81,6 +83,13 @@ namespace Sk8M8_API.Controllers
         {
 
             var tempFilePath = await image.StoreTempFile();
+
+            if (!await tempFilePath.FileIsSafe())
+            {
+                return Json(
+                    new Resources.BaseResultResource() { Success = false }
+                );
+            }
 
             var filePath = await StorageUtils.StoreFile();
 
