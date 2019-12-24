@@ -103,6 +103,7 @@ namespace Sk8M8_API.Controllers
             _context.Client.Update(relevantUser);
 
             _context.SaveChanges();
+            tempFile.Delete();
 
             return Json(
                 new Resources.BaseResultResource() { Success = true }

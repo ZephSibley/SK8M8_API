@@ -120,8 +120,6 @@ namespace Sk8M8_API
                 await blobClient.UploadAsync(uploadFileStream);
             }
 
-            file.Delete();
-
             return fileName;
         }
     }
