@@ -98,12 +98,12 @@ namespace Sk8M8_API.Controllers
             }
 
             var fileName = await StorageUtils.StoreFile(tempFile.StripExif());
+            tempFile.Delete();
 
             relevantUser.Avatar = fileName;
             _context.Client.Update(relevantUser);
 
             _context.SaveChanges();
-            tempFile.Delete();
 
             return Json(
                 new Resources.BaseResultResource() { Success = true }
