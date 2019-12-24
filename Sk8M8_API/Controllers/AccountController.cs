@@ -82,7 +82,7 @@ namespace Sk8M8_API.Controllers
             )
         {
 
-            var tempFile = await image.StoreTempFile();
+            var tempFile = await image.CreateTempFile();
             var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == client.Email);
 
             if (relevantUser == null || !await tempFile.FileIsSafe())

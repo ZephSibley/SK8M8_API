@@ -87,7 +87,7 @@ namespace Sk8M8_API
         /// </summary>
         /// <param name="file"></param>
         /// <returns>The path to the file on disk</returns>
-        public static async Task<FileInfo> StoreTempFile(this IFormFile file)
+        public static async Task<FileInfo> CreateTempFile(this IFormFile file)
         {
             var filePath = Path.GetTempFileName();
 
