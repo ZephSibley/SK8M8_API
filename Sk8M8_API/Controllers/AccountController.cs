@@ -87,6 +87,11 @@ namespace Sk8M8_API.Controllers
 
             if (relevantUser == null || !await tempFile.FileIsSafe())
             {
+                if (tempFile.Exists)
+                {
+                    tempFile.Delete();
+                }
+
                 return Json(
                     new Resources.BaseResultResource() { Success = false }
                 );
