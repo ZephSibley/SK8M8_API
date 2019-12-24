@@ -92,9 +92,9 @@ namespace Sk8M8_API.Controllers
                 );
             }
 
-            var filePath = await StorageUtils.StoreFile(tempFile.StripExif());
+            var fileName = await StorageUtils.StoreFile(tempFile.StripExif());
 
-            relevantUser.Avatar = filePath.FullName;
+            relevantUser.Avatar = fileName;
             _context.Client.Update(relevantUser);
 
             _context.SaveChanges();

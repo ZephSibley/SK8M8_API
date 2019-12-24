@@ -1,4 +1,5 @@
-﻿using FFMpegCore;
+﻿using Azure.Storage.Blobs;
+using FFMpegCore;
 using FFMpegCore.Enums;
 using FFMpegCore.FFMPEG;
 using FFMpegCore.FFMPEG.Enums;
@@ -98,16 +99,29 @@ namespace Sk8M8_API
 
             return new FileInfo(filePath);
         }
-        public static async Task<FileInfo> StoreFile(FileInfo file)
+        /// <summary>
+        /// Puts files in Blob storage
+        /// </summary>
+        /// <param name="file">A file on disk PROCESSED FIRST</param>
+        /// <returns>A GUID representing the new name of the stored file</returns>
+        public static async Task<string> StoreFile(FileInfo file)
         {
-            var filePath = Path.GetTempFileName();
+            string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            // TODO: Make container name an env variable
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("sk8m8-test");
 
-            using (var stream = System.IO.File.Create(filePath))
+            string fileName = Guid.NewGuid().ToString();
+            BlobClient blobClient = containerClient.GetBlobClient(fileName);
+
+            Console.WriteLine("Uploading {0} to Blob storage as blob:\n\t {1}\n", fileName, blobClient.Uri);
+
+            using (FileStream uploadFileStream = File.OpenRead(file.FullName))
             {
-                await file.CopyToAsync(stream);
+                await blobClient.UploadAsync(uploadFileStream);
             }
 
-            return new FileInfo(filePath);
+            return fileName;
         }
     }
 }
