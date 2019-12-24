@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace Sk8M8_API
 {
-    // TODO: Configure Azure blob storage
     public static class StorageUtils
     {
         /// <summary>
