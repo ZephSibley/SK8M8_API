@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -103,6 +104,20 @@ namespace Sk8M8_API.Controllers
             relevantUser.Avatar = fileName;
             _context.Client.Update(relevantUser);
 
+            _context.SaveChanges();
+
+            return Json(
+                new Resources.BaseResultResource() { Success = true }
+            );
+        }
+        [HttpPost]
+        public ActionResult UpdateStatus([FromBody] string status)
+        {
+            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == userClaim);
+
+            relevantUser.Status = status;
+            _context.Client.Update(relevantUser);
             _context.SaveChanges();
 
             return Json(
