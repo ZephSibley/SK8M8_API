@@ -3,6 +3,7 @@ using FFMpegCore;
 using FFMpegCore.Enums;
 using FFMpegCore.FFMPEG;
 using FFMpegCore.FFMPEG.Enums;
+using FFMpegCore.FFMPEG.Exceptions;
 using Microsoft.AspNetCore.Http;
 using nClam;
 using System;
@@ -41,16 +42,32 @@ namespace Sk8M8_API
             }
         }
         /// <summary>
+        /// Wrapper for file to video type conversion
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns>The input file as FFMpeg VideoInfo type or null</returns>
+        public static VideoInfo FileAsVideo(this FileInfo file)
+        {
+            VideoInfo videoFile = null;
+            try
+            {
+                videoFile = VideoInfo.FromFileInfo(file);
+            }
+            catch (FFMpegException e)
+            {
+                Console.WriteLine("Error in FFMpeg processing \n {0}", e);
+            }
+            return videoFile;
+        }
+        /// <summary>
         /// Transcodes video files to mp4
         /// </summary>
         /// <param name="file">Video File</param>
         /// <returns>The transcoded file</returns>
-        public static FileInfo Transcode(this FileInfo file)
+        public static FileInfo Transcode(this VideoInfo video)
         {
             using (var encoder = new FFMpeg())
             {
-                var video = VideoInfo.FromFileInfo(file);
-
                 FileInfo outputFile = new FileInfo(Path.GetTempFileName());
 
                 encoder.OnProgress += (percentage) => Console.WriteLine("Transcoding video: Progress {0}%", percentage);

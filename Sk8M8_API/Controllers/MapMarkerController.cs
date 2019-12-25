@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FFMpegCore;
+using FFMpegCore.FFMPEG.Exceptions;
 using GeoAPI.Geometries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +48,7 @@ namespace Sk8M8_API.Controllers
                 });
             }
 
-            var newVideo = await CreateMediaRecord(marker.Video, relevantUser);
+            var newVideo = await CreateMediaRecordForVideo(marker.Video, relevantUser);
             if (newVideo == null)
             {
                 return Json(
@@ -85,13 +88,13 @@ namespace Sk8M8_API.Controllers
 
         /// <summary>
         /// Creates a Media Record for a video file, and stores that file in blob storage.
-        /// Could be made to handle other file types with a little effort.
         /// </summary>
         /// <param name="file">A video file</param>
         /// <param name="user">Client record</param>
         /// <returns>A media record or null</returns>
-        private async Task<Media> CreateMediaRecord(IFormFile file, Client user)
+        private async Task<Media> CreateMediaRecordForVideo(IFormFile file, Client user)
         {
+
             var tempFile = await file.CreateTempFile();
             
             if (!await tempFile.FileIsSafe())
@@ -103,7 +106,15 @@ namespace Sk8M8_API.Controllers
                 return null;
             }
 
-            var fileName = await StorageUtils.StoreFile(tempFile.Transcode());
+            // Both tempVideoFile and tempFile point at the same file
+            var tempVideoFile = StorageUtils.FileAsVideo(tempFile);
+            if (tempVideoFile == null | tempVideoFile.Duration.TotalSeconds > 10)
+            {
+                tempFile.Delete();
+                return null;
+            }
+
+            var fileName = await StorageUtils.StoreFile(tempVideoFile.Transcode());
             tempFile.Delete();
 
             var newMedia = new Media()
