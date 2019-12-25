@@ -3,6 +3,7 @@ using System;
 using GeoAPI.Geometries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Sk8M8_API.Models;
@@ -10,9 +11,10 @@ using Sk8M8_API.Models;
 namespace Sk8M8_API.Migrations
 {
     [DbContext(typeof(SkateContext))]
-    partial class SkateContextModelSnapshot : ModelSnapshot
+    [Migration("20191225173544_FileUploadStuff")]
+    partial class FileUploadStuff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

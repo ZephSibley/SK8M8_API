@@ -32,7 +32,9 @@ namespace Sk8M8_API.Controllers
             {
                 Username = client.Username,
                 Password = Services.PasswordService.HashPassword(client.Password),
-                Email = client.Email
+                Email = client.Email,
+                Avatar = "",
+                Status = ""
             };
 
             _context.Client.Add(clientRecord);
@@ -74,7 +76,13 @@ namespace Sk8M8_API.Controllers
 
             return Json(loginToken);
         }
+        public ActionResult Me()
+        {
+            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Client relevantUser = _context.Client.FirstOrDefault(x => x.Email == userClaim);
 
+            return Json(relevantUser);
+        }
         [HttpPost]
         public async Task<ActionResult> UpdateAvatar(
             [FromBody]
