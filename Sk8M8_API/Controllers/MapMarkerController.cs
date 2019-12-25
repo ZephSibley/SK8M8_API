@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using GeoAPI.Geometries;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite;
 using Sk8M8_API.Models;
@@ -26,18 +27,16 @@ namespace Sk8M8_API.Controllers
         /// <param name="Longitude"></param>
         /// <returns>Success Json object</returns>
         [HttpPost]
-        public ActionResult Create(
+        public async Task<ActionResult> Create(
             [FromBody]
             DataClasses.PointCreationRequest marker
         )
         {
-            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
-            var markerPoint = geometryFactory.CreatePoint(new GeoAPI.Geometries.Coordinate(marker.Latitude, marker.Longitude));
+            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == userClaim);
 
-            var proximityCheck = Context.MapMarker
-                .Where(row => row.Point.IsWithinDistance(markerPoint, 0.2))
-                .Any();
-            if (proximityCheck)
+            var markerPoint = CreateGeoPoint(marker.Latitude, marker.Longitude);
+            if (markerPoint == null)
             {
                 return Json(new
                 {
@@ -46,19 +45,74 @@ namespace Sk8M8_API.Controllers
                 });
             }
 
+            var newVideo = await CreateMediaRecord(marker.Video, relevantUser);
+            if (newVideo == null)
+            {
+                return Json(
+                    new Resources.BaseResultResource() { Success = false }
+                );
+            }
+            Context.Media.Add(newVideo);
+
             var newMarker = new MapMarker()
             {
-                Name = marker.name,
-                LocationCategory = marker.category,
+                Name = marker.Name,
+                LocationCategory = marker.Category,
                 Point = markerPoint,
-            };
+                Video = newVideo,
+                Creator = relevantUser,
+            }; 
             Context.MapMarker.Add(newMarker);
             Context.SaveChanges();
             
-            return Json(new
+            return Json(
+                new Resources.BaseResultResource() { Success = true }
+            );
+        }
+
+        private IPoint CreateGeoPoint(double latitude, double longitude)
+        {
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+            var point = geometryFactory.CreatePoint(new Coordinate(latitude, longitude));
+
+            var proximityCheck = Context.MapMarker
+                .Where(row => row.Point.IsWithinDistance(point, 0.2))
+                .Any();
+
+            if (proximityCheck) { return null; }
+            return point;
+        }
+
+        /// <summary>
+        /// Creates a Media Record for a video file, and stores that file in blob storage.
+        /// Could be made to handle other file types with a little effort.
+        /// </summary>
+        /// <param name="file">A video file</param>
+        /// <param name="user">Client record</param>
+        /// <returns>A media record or null</returns>
+        private async Task<Media> CreateMediaRecord(IFormFile file, Client user)
+        {
+            var tempFile = await file.CreateTempFile();
+            
+            if (!await tempFile.FileIsSafe())
             {
-                success = true
-            });
+                if (tempFile.Exists)
+                {
+                    tempFile.Delete();
+                }
+                return null;
+            }
+
+            var fileName = await StorageUtils.StoreFile(tempFile.Transcode());
+            tempFile.Delete();
+
+            var newMedia = new Media()
+            {
+                Client = user,
+                Filename = fileName
+            };
+
+            return newMedia;
         }
 
         /// <summary>
