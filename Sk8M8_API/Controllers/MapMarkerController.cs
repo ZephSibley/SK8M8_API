@@ -108,7 +108,7 @@ namespace Sk8M8_API.Controllers
 
             // Both tempVideoFile and tempFile point at the same file
             var tempVideoFile = StorageUtils.FileAsVideo(tempFile);
-            if (tempVideoFile == null | tempVideoFile.Duration.TotalSeconds > 10)
+            if (tempVideoFile == null || tempVideoFile.Duration.TotalSeconds > 10)
             {
                 tempFile.Delete();
                 return null;
