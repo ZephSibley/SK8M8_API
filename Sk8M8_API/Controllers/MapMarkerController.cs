@@ -35,9 +35,6 @@ namespace Sk8M8_API.Controllers
             DataClasses.PointCreationRequest marker
         )
         {
-            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == userClaim);
-
             var markerPoint = CreateGeoPoint(marker.Latitude, marker.Longitude);
             if (markerPoint == null)
             {
@@ -47,6 +44,9 @@ namespace Sk8M8_API.Controllers
                     msg = "Could not create: Too close to another marker."
                 });
             }
+
+            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == userClaim);
 
             var newVideo = await CreateMediaRecordForVideo(marker.Video, relevantUser);
             if (newVideo == null)
