@@ -41,6 +41,16 @@ namespace Sk8M8_API
                     return false;
             }
         }
+        public static bool ValidateExtensions(this FileInfo file, string[] permittedExtensions)
+        {
+            var fileExt = Path.GetExtension(file.Name).ToLowerInvariant();
+
+            if (string.IsNullOrEmpty(fileExt) | !permittedExtensions.Contains(fileExt))
+            {
+                return false;
+            }
+            return true;
+        }
         /// <summary>
         /// Wrapper for file to video type conversion
         /// </summary>
