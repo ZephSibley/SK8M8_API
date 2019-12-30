@@ -15,32 +15,6 @@ namespace Sk8M8_API
 {
     public static class StorageUtils
     {
-        /// <summary>
-        /// On-demand virus scanner for temp files.
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns>bool</returns>
-        public static async Task<bool> FileIsSafe(this FileInfo file)
-        {
-            var clam = new ClamClient("localhost", 3310);
-            var scanResult = await clam.ScanFileOnServerAsync(file.FullName);
-
-            switch (scanResult.Result)
-            {
-                case ClamScanResults.Clean:
-                    return true;
-                case ClamScanResults.VirusDetected:
-                    Console.WriteLine("Virus Found!");
-                    Console.WriteLine("Virus name: {0}", scanResult.InfectedFiles.First().VirusName);
-                    return false;
-                case ClamScanResults.Error:
-                    Console.WriteLine("Woah an error occured! Error: {0}", scanResult.RawResult);
-                    return false;
-                default:
-                    Console.WriteLine("VIRUS SCAN DEFAULTING");
-                    return false;
-            }
-        }
         public static bool ValidateExtensions(this FileInfo file, string[] permittedExtensions)
         {
             var fileExt = Path.GetExtension(file.Name).ToLowerInvariant();
@@ -124,6 +98,32 @@ namespace Sk8M8_API
             }
 
             return new FileInfo(filePath);
+        }
+        /// <summary>
+        /// On-demand virus scanner for temp files.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns>bool</returns>
+        public static async Task<bool> FileIsSafe(this FileInfo file)
+        {
+            var clam = new ClamClient("localhost", 3310);
+            var scanResult = await clam.ScanFileOnServerAsync(file.FullName);
+
+            switch (scanResult.Result)
+            {
+                case ClamScanResults.Clean:
+                    return true;
+                case ClamScanResults.VirusDetected:
+                    Console.WriteLine("Virus Found!");
+                    Console.WriteLine("Virus name: {0}", scanResult.InfectedFiles.First().VirusName);
+                    return false;
+                case ClamScanResults.Error:
+                    Console.WriteLine("Woah an error occured! Error: {0}", scanResult.RawResult);
+                    return false;
+                default:
+                    Console.WriteLine("VIRUS SCAN DEFAULTING");
+                    return false;
+            }
         }
         /// <summary>
         /// Puts files in Blob storage
