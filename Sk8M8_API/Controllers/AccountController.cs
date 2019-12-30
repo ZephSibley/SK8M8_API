@@ -86,14 +86,15 @@ namespace Sk8M8_API.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateAvatar(
             [FromBody]
-            IFormFile image,
-            Client client
+            IFormFile image
             )
         {
             string[] permittedExtensions = { ".png", ".jpg" };
 
             var tempFile = await image.CreateTempFile();
-            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == client.Email);
+
+            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
             if (
                 relevantUser == null ||
