@@ -2,9 +2,6 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using FFMpegCore;
-using FFMpegCore.FFMPEG.Exceptions;
-using GeoAPI.Geometries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite;
@@ -35,8 +32,11 @@ namespace Sk8M8_API.Controllers
             DataClasses.PointCreationRequest marker
         )
         {
-            var markerPoint = CreateGeoPoint(marker.Latitude, marker.Longitude);
-            if (markerPoint == null)
+            var markerPoint = StorageUtils.CreateGeoPoint(marker.Latitude, marker.Longitude);
+            var proximityCheck = Context.MapMarker
+                .Where(row => row.Point.IsWithinDistance(markerPoint, 0.2))
+                .Any();
+            if (proximityCheck)
             {
                 return Json(new
                 {
@@ -72,26 +72,6 @@ namespace Sk8M8_API.Controllers
                 new Resources.BaseResultResource() { Success = true }
             );
         }
-        /// <summary>
-        /// Checks if there is a point too close to the proposed one, if not then
-        /// creates a database friendly location record.
-        /// </summary>
-        /// <param name="latitude"></param>
-        /// <param name="longitude"></param>
-        /// <returns>Point object or null</returns>
-        private IPoint CreateGeoPoint(double latitude, double longitude)
-        {
-            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
-            var point = geometryFactory.CreatePoint(new Coordinate(latitude, longitude));
-
-            var proximityCheck = Context.MapMarker
-                .Where(row => row.Point.IsWithinDistance(point, 0.2))
-                .Any();
-
-            if (proximityCheck) { return null; }
-            return point;
-        }
-
         /// <summary>
         /// Creates a Media Record for a video file, and stores that file in blob storage.
         /// </summary>
