@@ -84,6 +84,25 @@ namespace Sk8M8_API.Controllers
             return Json(relevantUser);
         }
         [HttpPost]
+        public ActionResult UpdateLocation(
+            [FromBody]
+            double latitude,
+            double longitude
+        )
+        {
+            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
+
+            relevantUser.Geolocation = StorageUtils.CreateGeoPoint(latitude, longitude);
+
+            _context.Client.Update(relevantUser);
+            _context.SaveChanges();
+
+            return Json(
+                new Resources.BaseResultResource() { Success = true }
+            );
+        }
+        [HttpPost]
         public async Task<ActionResult> UpdateAvatar(
             [FromBody]
             IFormFile image
