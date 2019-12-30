@@ -72,7 +72,13 @@ namespace Sk8M8_API.Controllers
                 new Resources.BaseResultResource() { Success = true }
             );
         }
-
+        /// <summary>
+        /// Checks if there is a point too close to the proposed one, if not then
+        /// creates a database friendly location record.
+        /// </summary>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <returns>Point object or null</returns>
         private IPoint CreateGeoPoint(double latitude, double longitude)
         {
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
