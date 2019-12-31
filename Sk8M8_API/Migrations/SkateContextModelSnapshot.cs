@@ -20,22 +20,6 @@ namespace Sk8M8_API.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Sk8M8_API.Models.Category", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateUpdated");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category");
-                });
-
             modelBuilder.Entity("Sk8M8_API.Models.Client", b =>
                 {
                     b.Property<long>("Id")
@@ -49,7 +33,7 @@ namespace Sk8M8_API.Migrations
 
                     b.Property<string>("Email");
 
-                    b.Property<string>("Geolocation");
+                    b.Property<IPoint>("Geolocation");
 
                     b.Property<string>("Password");
 
@@ -82,26 +66,20 @@ namespace Sk8M8_API.Migrations
                     b.ToTable("ClientLogin");
                 });
 
-            modelBuilder.Entity("Sk8M8_API.Models.LocationCategory", b =>
+            modelBuilder.Entity("Sk8M8_API.Models.LocationType", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<long?>("CategoryId");
 
                     b.Property<DateTime>("DateCreated");
 
                     b.Property<DateTime>("DateUpdated");
 
-                    b.Property<long?>("MapMarkerId");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("MapMarkerId");
-
-                    b.ToTable("LocationCategory");
+                    b.ToTable("LocationType");
                 });
 
             modelBuilder.Entity("Sk8M8_API.Models.MapMarker", b =>
@@ -130,6 +108,28 @@ namespace Sk8M8_API.Migrations
                     b.HasIndex("VideoId");
 
                     b.ToTable("MapMarker");
+                });
+
+            modelBuilder.Entity("Sk8M8_API.Models.MarkerCategory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateUpdated");
+
+                    b.Property<long?>("LocationTypeId");
+
+                    b.Property<long?>("MapMarkerId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationTypeId");
+
+                    b.HasIndex("MapMarkerId");
+
+                    b.ToTable("MarkerCategory");
                 });
 
             modelBuilder.Entity("Sk8M8_API.Models.Media", b =>
@@ -221,17 +221,6 @@ namespace Sk8M8_API.Migrations
                         .HasForeignKey("ClientId");
                 });
 
-            modelBuilder.Entity("Sk8M8_API.Models.LocationCategory", b =>
-                {
-                    b.HasOne("Sk8M8_API.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("Sk8M8_API.Models.MapMarker", "MapMarker")
-                        .WithMany()
-                        .HasForeignKey("MapMarkerId");
-                });
-
             modelBuilder.Entity("Sk8M8_API.Models.MapMarker", b =>
                 {
                     b.HasOne("Sk8M8_API.Models.Client", "Creator")
@@ -241,6 +230,17 @@ namespace Sk8M8_API.Migrations
                     b.HasOne("Sk8M8_API.Models.Media", "Video")
                         .WithMany()
                         .HasForeignKey("VideoId");
+                });
+
+            modelBuilder.Entity("Sk8M8_API.Models.MarkerCategory", b =>
+                {
+                    b.HasOne("Sk8M8_API.Models.LocationType", "LocationType")
+                        .WithMany()
+                        .HasForeignKey("LocationTypeId");
+
+                    b.HasOne("Sk8M8_API.Models.MapMarker", "MapMarker")
+                        .WithMany()
+                        .HasForeignKey("MapMarkerId");
                 });
 
             modelBuilder.Entity("Sk8M8_API.Models.Media", b =>
