@@ -79,7 +79,7 @@ namespace Sk8M8_API.Controllers
         public ActionResult Me()
         {
             var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Client relevantUser = _context.Client.FirstOrDefault(x => x.Email == userClaim);
+            Client relevantUser = _context.Client.FirstOrDefault(x => x.Id == Convert.ToInt64(userClaim));
 
             return Json(relevantUser);
         }
