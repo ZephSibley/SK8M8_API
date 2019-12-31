@@ -90,7 +90,7 @@ namespace Sk8M8_API.Controllers
             double longitude
         )
         {
-            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
             relevantUser.Geolocation = StorageUtils.CreateGeoPoint(latitude, longitude);
