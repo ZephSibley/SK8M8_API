@@ -48,24 +48,25 @@ namespace Sk8M8_API.Controllers
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
-            var newVideo = await CreateMediaRecordForVideo(marker.Video, relevantUser);
-            if (newVideo == null)
+            var newVideoRecord = await CreateMediaRecordForVideo(marker.Video, relevantUser);
+            if (newVideoRecord == null)
             {
                 return Json(
                     new Resources.BaseResultResource() { Success = false }
                 );
             }
-            Context.Media.Add(newVideo);
 
-            var newMarker = new MapMarker()
+            Context.Media.Add(newVideoRecord);
+
+            var newMarkerRecord = new MapMarker()
             {
                 Name = marker.Name,
                 LocationCategory = marker.Category,
                 Point = markerPoint,
-                Video = newVideo,
+                Video = newVideoRecord,
                 Creator = relevantUser,
             }; 
-            Context.MapMarker.Add(newMarker);
+            Context.MapMarker.Add(newMarkerRecord);
             Context.SaveChanges();
             
             return Json(
