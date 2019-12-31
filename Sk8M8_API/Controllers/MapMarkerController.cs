@@ -73,6 +73,12 @@ namespace Sk8M8_API.Controllers
             };
             Context.MarkerCategory.Add(newMarkerCategoriesRecord);
 
+            var newClientMarkersRecord = new ClientMarker()
+            {
+                User = relevantUser,
+                MapMarker = newMarkerRecord,
+            };
+
             Context.SaveChanges();
             
             return Json(

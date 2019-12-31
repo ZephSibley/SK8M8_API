@@ -21,6 +21,7 @@ namespace Sk8M8_API.Models
         public DbSet<Permission> Permission { get; set; }
         public DbSet<UserPermission> UserPermission { get; set; }
         public DbSet<MediaRating> MediaRating { get; set; }
-        public DbSet<MarkerCategory> MarkerCategory { get; set; } 
+        public DbSet<MarkerCategory> MarkerCategory { get; set; }
+        public DbSet<ClientMarker> ClientMarker { get; set; }
     }
 }
