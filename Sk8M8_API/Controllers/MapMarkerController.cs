@@ -32,6 +32,12 @@ namespace Sk8M8_API.Controllers
             DataClasses.PointCreationRequest marker
         )
         {
+            var userClaim = User.FindFirstValue(ClaimTypes.Name);
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
+
+            var relevantCategory = Context.LocationType.FirstOrDefault<LocationType>(x => x.Name == marker.Category);
+            if (relevantCategory == null) { return Json(new Resources.BaseResultResource() { Success = false }); }
+
             var markerPoint = StorageUtils.CreateGeoPoint(marker.Latitude, marker.Longitude);
             var proximityCheck = Context.MapMarker
                 .Where(row => row.Point.IsWithinDistance(markerPoint, 0.2))
@@ -45,16 +51,8 @@ namespace Sk8M8_API.Controllers
                 });
             }
 
-            var userClaim = User.FindFirstValue(ClaimTypes.Name);
-            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
-
             var newVideoRecord = await CreateMediaRecordForVideo(marker.Video, relevantUser);
-            if (newVideoRecord == null)
-            {
-                return Json(
-                    new Resources.BaseResultResource() { Success = false }
-                );
-            }
+            if (newVideoRecord == null) { return Json(new Resources.BaseResultResource() { Success = false }); }
 
             Context.Media.Add(newVideoRecord);
 
@@ -67,6 +65,14 @@ namespace Sk8M8_API.Controllers
                 Creator = relevantUser,
             }; 
             Context.MapMarker.Add(newMarkerRecord);
+
+            var newMarkerCategoriesRecord = new MarkerCategory()
+            {
+                LocationType = relevantCategory,
+                MapMarker = newMarkerRecord,
+            };
+            Context.MarkerCategory.Add(newMarkerCategoriesRecord);
+
             Context.SaveChanges();
             
             return Json(
@@ -153,6 +159,14 @@ namespace Sk8M8_API.Controllers
                 .FirstOrDefault(row => row.Id == id);
 
             return Json(markerDetail);
+        }
+        public ActionResult LocationTypes()
+        {
+            var locationTypes = Context.LocationType
+                .Select(row => row.Name)
+                .ToList();
+
+            return Json(locationTypes);
         }
     }
 }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Sk8M8_API.Models
 {
-    public class LocationCategory : BaseEntity
+    public class MarkerCategory : BaseEntity
     {
         public MapMarker MapMarker { get; set; }
-        public Category Category { get; set; }
+        public LocationType LocationType { get; set; }
     }
 }
