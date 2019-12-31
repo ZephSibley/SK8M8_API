@@ -112,7 +112,7 @@ namespace Sk8M8_API.Controllers
 
             var tempFile = await image.CreateTempFile();
 
-            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
             if (
@@ -146,7 +146,7 @@ namespace Sk8M8_API.Controllers
         [HttpPost]
         public ActionResult UpdateStatus([FromBody] string status)
         {
-            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
             relevantUser.Status = status;

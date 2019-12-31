@@ -45,7 +45,7 @@ namespace Sk8M8_API.Controllers
                 });
             }
 
-            var userClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
             var newVideo = await CreateMediaRecordForVideo(marker.Video, relevantUser);
