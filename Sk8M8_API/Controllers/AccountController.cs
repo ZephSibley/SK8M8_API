@@ -81,7 +81,9 @@ namespace Sk8M8_API.Controllers
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
             Client relevantUser = _context.Client.FirstOrDefault(x => x.Id == Convert.ToInt64(userClaim));
 
-            return Json(relevantUser);
+            return Json(
+                new { relevantUser.Username, relevantUser.Avatar, relevantUser.Status }
+            );
         }
         [HttpPost]
         public ActionResult UpdateLocation(
