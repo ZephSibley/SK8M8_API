@@ -12,7 +12,7 @@ namespace Sk8M8_API.Controllers
     public class AccountController : Controller
     {
         private SkateContext _context;
-        private Services.ISessionManagementService _sessionManagementService;
+        private readonly Services.ISessionManagementService _sessionManagementService;
 
         public AccountController(SkateContext context, Services.ISessionManagementService sessionManagementService)
         {
