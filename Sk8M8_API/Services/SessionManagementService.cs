@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Text;
-using Sk8M8_API.Enums;
-using Sk8M8_API.DataClasses;
-using System.IdentityModel.Tokens.Jwt;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using Microsoft.Extensions.Options;
+using Sk8M8_API.DataClasses;
 using Sk8M8_API.Models;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Sk8M8_API.Services
 {

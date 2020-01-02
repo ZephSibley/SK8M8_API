@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite;
 using Sk8M8_API.Models;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Sk8M8_API.Controllers
 {
@@ -63,7 +63,7 @@ namespace Sk8M8_API.Controllers
                 Point = markerPoint,
                 Video = newVideoRecord,
                 Creator = relevantUser,
-            }; 
+            };
             Context.MapMarker.Add(newMarkerRecord);
 
             var newMarkerCategoriesRecord = new MarkerCategory()
@@ -80,7 +80,7 @@ namespace Sk8M8_API.Controllers
             };
 
             Context.SaveChanges();
-            
+
             return Json(
                 new Resources.BaseResultResource() { Success = true }
             );
@@ -95,7 +95,7 @@ namespace Sk8M8_API.Controllers
         {
 
             var tempFile = await file.CreateTempFile();
-            
+
             if (!await tempFile.FileIsSafe())
             {
                 if (tempFile.Exists)

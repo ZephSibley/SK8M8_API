@@ -1,17 +1,17 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sk8M8_API.Models;
 using Microsoft.IdentityModel.Tokens;
-using Sk8M8_API.DataClasses;
-using System.Text;
 using SignalRChat.Hubs;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Sk8M8_API.DataClasses;
+using Sk8M8_API.Models;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Sk8M8_API
 {
@@ -63,7 +63,7 @@ namespace Sk8M8_API
                     OnMessageReceived = context =>
                     {
                         var accessToken = context.Request.Query["access_token"];
-                
+
                         // If the request is for our hub...
                         var path = context.HttpContext.Request.Path;
                         if (!string.IsNullOrEmpty(accessToken) &&
@@ -80,13 +80,13 @@ namespace Sk8M8_API
             services.AddScoped<Services.ISessionManagementService, Services.SessionManagementService>();
 
             services.AddSignalR();
-            services.AddMvc( o =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                o.Filters.Add(new AuthorizeFilter(policy));
-            });
+            services.AddMvc(o =>
+           {
+               var policy = new AuthorizationPolicyBuilder()
+                   .RequireAuthenticatedUser()
+                   .Build();
+               o.Filters.Add(new AuthorizeFilter(policy));
+           });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -110,10 +110,10 @@ namespace Sk8M8_API
                 hubs.MapHub<ChatHub>("/chat");
             });
 
-            app.UseMvc( routes =>
-            {
-                routes.MapRoute("default", "{controller}/{action}/{id?}");
-            });
+            app.UseMvc(routes =>
+           {
+               routes.MapRoute("default", "{controller}/{action}/{id?}");
+           });
         }
     }
 }

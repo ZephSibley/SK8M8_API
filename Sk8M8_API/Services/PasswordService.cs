@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Sk8M8_API.Enums;
 using Bcrypt = BCrypt.Net.BCrypt;
-using Sk8M8_API.Enums;
 
 namespace Sk8M8_API.Services
 {
@@ -30,14 +26,16 @@ namespace Sk8M8_API.Services
         {
             try
             {
-                if(Bcrypt.Verify(Password, SourcePassword))
+                if (Bcrypt.Verify(Password, SourcePassword))
                 {
                     return ValidatePasswordStatus.Valid;
-                } else
+                }
+                else
                 {
                     return ValidatePasswordStatus.Invalid;
                 }
-            } catch (BCrypt.Net.BcryptAuthenticationException)
+            }
+            catch (BCrypt.Net.BcryptAuthenticationException)
             {
                 return ValidatePasswordStatus.Error;
             }

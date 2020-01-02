@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Sk8M8_API.Models;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Sk8M8_API.Models;
-using Sk8M8_API.Utils;
 
 namespace Sk8M8_API.Controllers
 {
-    public class AccountController : Controller 
+    public class AccountController : Controller
     {
         private SkateContext _context;
         private Services.ISessionManagementService _sessionManagementService;
@@ -52,7 +48,7 @@ namespace Sk8M8_API.Controllers
         {
             var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);
 
-            if(relevantUser == null)
+            if (relevantUser == null)
             {
                 throw new Exception("This user doesn't exist");
             }
