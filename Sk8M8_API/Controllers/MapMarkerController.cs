@@ -78,6 +78,7 @@ namespace Sk8M8_API.Controllers
                 User = relevantUser,
                 MapMarker = newMarkerRecord,
             };
+            Context.ClientMarker.Add(newClientMarkersRecord);
 
             Context.SaveChanges();
 
