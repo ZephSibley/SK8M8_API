@@ -29,8 +29,8 @@ namespace Sk8M8_API.Controllers
                 Username = client.Username,
                 Password = Services.PasswordService.HashPassword(client.Password),
                 Email = client.Email,
-                Avatar = "",
-                Status = ""
+                Avatar = null,
+                Status = null
             };
 
             Context.Client.Add(clientRecord);
