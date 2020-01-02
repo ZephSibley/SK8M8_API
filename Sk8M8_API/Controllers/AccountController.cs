@@ -11,12 +11,12 @@ namespace Sk8M8_API.Controllers
 {
     public class AccountController : Controller
     {
-        private SkateContext _context;
+        private SkateContext Context { get; set; }
         private readonly Services.ISessionManagementService _sessionManagementService;
 
         public AccountController(SkateContext context, Services.ISessionManagementService sessionManagementService)
         {
-            _context = context;
+            Context = context;
             _sessionManagementService = sessionManagementService;
         }
 
@@ -33,9 +33,9 @@ namespace Sk8M8_API.Controllers
                 Status = ""
             };
 
-            _context.Client.Add(clientRecord);
+            Context.Client.Add(clientRecord);
 
-            _context.SaveChanges();
+            Context.SaveChanges();
 
             return Json(
                 new Resources.BaseResultResource() { Success = true }
@@ -51,7 +51,7 @@ namespace Sk8M8_API.Controllers
                 Success = false
             };
 
-            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);
 
             if (relevantUser == null)
             {
@@ -67,15 +67,15 @@ namespace Sk8M8_API.Controllers
                 loginToken.Success = true;
             }
 
-            _context.ClientLogin.Add(new ClientLogin() { Client = relevantUser, IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
-            _context.SaveChanges();
+            Context.ClientLogin.Add(new ClientLogin() { Client = relevantUser, IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
+            Context.SaveChanges();
 
             return Json(loginToken);
         }
         public ActionResult Me()
         {
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
-            Client relevantUser = _context.Client.FirstOrDefault(x => x.Id == Convert.ToInt64(userClaim));
+            Client relevantUser = Context.Client.FirstOrDefault(x => x.Id == Convert.ToInt64(userClaim));
 
             return Json(
                 new { relevantUser.Username, relevantUser.Avatar, relevantUser.Status }
@@ -89,12 +89,12 @@ namespace Sk8M8_API.Controllers
         )
         {
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
-            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
             relevantUser.Geolocation = StorageUtils.CreateGeoPoint(latitude, longitude);
 
-            _context.Client.Update(relevantUser);
-            _context.SaveChanges();
+            Context.Client.Update(relevantUser);
+            Context.SaveChanges();
 
             return Json(
                 new Resources.BaseResultResource() { Success = true }
@@ -111,7 +111,7 @@ namespace Sk8M8_API.Controllers
             var tempFile = await image.CreateTempFile();
 
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
-            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
             if (
                 relevantUser == null ||
@@ -133,9 +133,9 @@ namespace Sk8M8_API.Controllers
             tempFile.Delete();
 
             relevantUser.Avatar = fileName;
-            _context.Client.Update(relevantUser);
+            Context.Client.Update(relevantUser);
 
-            _context.SaveChanges();
+            Context.SaveChanges();
 
             return Json(
                 new Resources.BaseResultResource() { Success = true }
@@ -145,11 +145,11 @@ namespace Sk8M8_API.Controllers
         public ActionResult UpdateStatus([FromBody] string status)
         {
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
-            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
             relevantUser.Status = status;
-            _context.Client.Update(relevantUser);
-            _context.SaveChanges();
+            Context.Client.Update(relevantUser);
+            Context.SaveChanges();
 
             return Json(
                 new Resources.BaseResultResource() { Success = true }
