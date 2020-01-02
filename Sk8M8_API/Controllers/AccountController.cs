@@ -46,19 +46,19 @@ namespace Sk8M8_API.Controllers
         [AllowAnonymous]
         public ActionResult Login([FromBody] Client Client)
         {
-            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);
-
-            if (relevantUser == null)
-            {
-                throw new Exception("This user doesn't exist");
-            }
-
-            var loginSuccess = Services.PasswordService.CheckPassword(Client.Password, relevantUser.Password);
-
             var loginToken = new Resources.LoginTokenResource()
             {
                 Success = false
             };
+
+            var relevantUser = _context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);
+
+            if (relevantUser == null)
+            {
+                return Json(loginToken);
+            }
+
+            var loginSuccess = Services.PasswordService.CheckPassword(Client.Password, relevantUser.Password);
 
             if (loginSuccess == Enums.ValidatePasswordStatus.Valid)
             {
