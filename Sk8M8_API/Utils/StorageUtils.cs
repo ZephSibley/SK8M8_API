@@ -34,7 +34,7 @@ namespace Sk8M8_API
         {
             var fileExt = Path.GetExtension(file.Name).ToLowerInvariant();
 
-            if (string.IsNullOrEmpty(fileExt) | !permittedExtensions.Contains(fileExt))
+            if (string.IsNullOrEmpty(fileExt) || !permittedExtensions.Contains(fileExt))
             {
                 return false;
             }
