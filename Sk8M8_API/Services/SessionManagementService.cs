@@ -11,8 +11,8 @@ namespace Sk8M8_API.Services
 {
     public class SessionManagementService : ISessionManagementService
     {
-        private AppSettings _appSettings;
-        private JwtSecurityTokenHandler _tokenHandler;
+        private readonly AppSettings _appSettings;
+        private readonly JwtSecurityTokenHandler _tokenHandler;
 
         public SessionManagementService(IOptions<AppSettings> appSettings)
         {
