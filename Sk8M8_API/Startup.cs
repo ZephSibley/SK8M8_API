@@ -103,7 +103,7 @@ namespace Sk8M8_API
             }
 
             app.UseAuthentication();
-            // app.UseHttpsRedirection(); We don't want to expose http at all in prod, and don't need a redirect in development
+            app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
             app.UseSignalR(hubs =>
             {
