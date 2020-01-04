@@ -13,7 +13,7 @@ steps:
   inputs:
     repository: $(imageName)
     command: buildAndPush
-    Dockerfile: /Dockerfile
+    Dockerfile: ./Dockerfile
     containerRegistry: AzureContainerRegistry
     tags: |
       $(Build.BuildId)
