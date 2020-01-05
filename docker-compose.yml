@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  sk8m8_api:
+    image: ${DOCKER_REGISTRY-}sk8m8api
+    build:
+      context: .
+      dockerfile: Sk8M8_API/Dockerfile
+    depends_on:
+      - antivirus
+
+  antivirus:
+    image: mkodockx/docker-clamav:alpine
+    container_name: clamav
+    restart: unless-stopped
+    ports:
+      - "3310:3310"
