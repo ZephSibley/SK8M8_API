@@ -4,7 +4,7 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
-COPY ["Sk8M8_API/Sk8M8_API.csproj", "Sk8M8_API/"]
+COPY ["Sk8M8_API.csproj", "Sk8M8_API/"]
 
 RUN dotnet restore "Sk8M8_API/Sk8M8_API.csproj"
 COPY . .
