@@ -13,9 +13,8 @@ RUN dotnet build "Sk8M8_API.csproj" -c Release -o /app
 
 FROM build AS publish
 RUN dotnet publish "Sk8M8_API.csproj" -c Release -o /app
-RUN sudo add-apt-repository ppa:mc3man/trusty-media
-RUN sudo apt-get update
-RUN sudo apt-get install ffmpeg
+RUN apt update
+RUN apt install ffmpeg
 
 FROM base AS final
 WORKDIR /app
