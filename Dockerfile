@@ -13,6 +13,8 @@ RUN dotnet build "Sk8M8_API.csproj" -c Release -o /app
 
 FROM build AS publish
 RUN dotnet publish "Sk8M8_API.csproj" -c Release -o /app
+RUN sudo apt update
+RUN sudo apt install ffmpeg
 
 FROM base AS final
 WORKDIR /app
