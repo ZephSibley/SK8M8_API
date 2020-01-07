@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   sk8m8_api:
-    image: ${DOCKER_REGISTRY-}sk8m8api
+    image: sk8m8containers.azurecr.io/sk8m8-api:latest
     build:
       context: .
       dockerfile: Sk8M8_API/Dockerfile
