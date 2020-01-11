@@ -3,15 +3,21 @@ version: '3.4'
 services:
   sk8m8_api:
     image: sk8m8containers.azurecr.io/sk8m8-api:latest
-    build:
-      context: .
-      dockerfile: Sk8M8_API/Dockerfile
+    ports:
+      - "8080:80"
+      - "8081:443"
+    networks:
+      - bridge
     depends_on:
       - antivirus
 
   antivirus:
     image: mkodockx/docker-clamav:alpine
-    container_name: clamav
     restart: unless-stopped
     ports:
       - "3310:3310"
+    networks:
+      - bridge
+
+networks:
+  bridge:
