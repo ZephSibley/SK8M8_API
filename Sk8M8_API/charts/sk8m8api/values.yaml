@@ -17,6 +17,7 @@ imagePullSecrets: []
 service:
   type: ClusterIP
   port: 80
+  port: 443
 
 probes:
   enabled: false
