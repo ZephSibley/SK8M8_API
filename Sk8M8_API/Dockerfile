@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
-COPY ["Sk8M8_API.csproj", "Sk8M8_API/"]
+COPY ["/../Sk8M8_API.csproj", "Sk8M8_API/"]
 RUN dotnet restore "Sk8M8_API/Sk8M8_API.csproj"
 COPY . .
 WORKDIR "/src/Sk8M8_API"
