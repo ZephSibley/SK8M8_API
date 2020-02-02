@@ -2,22 +2,21 @@ version: '3.4'
 
 services:
   sk8m8_api:
-    image: sk8m8containers.azurecr.io/sk8m8-api:latest
+    image: sk8m8-api
     ports:
-      - "8080:80"
-      - "8081:443"
-    networks:
-      - bridge
+      - "5000:80"
     depends_on:
       - antivirus
 
   antivirus:
-    image: mkodockx/docker-clamav:alpine
+    image: mkodockx/docker-clamav
     restart: unless-stopped
     ports:
       - "3310:3310"
-    networks:
-      - bridge
 
-networks:
-  bridge:
+  reverse-proxy:
+    image: nginx
+    ports:
+        - "80:80"
+    volumes:
+        - ./reverse-proxy.conf:/etc/nginx/sites-enabled/default
