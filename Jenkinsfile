@@ -11,7 +11,7 @@ node {
 
     stage('Push') {
         localhost
-        docker.withRegistry('http:/172.18.0.1:5000') {
+        docker.withRegistry('https://index.docker.io/v1/sk8m8/testing-repo') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
