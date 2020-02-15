@@ -6,7 +6,7 @@ node {
     }
 
     stage('Build') {
-        app = docker.build("sk8m8-api")
+        app = docker.build("sk8m8/testing-repo")
     }
 
     stage('Push') {
