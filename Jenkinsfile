@@ -6,7 +6,7 @@ node {
     }
 
     stage('Build') {
-        app = docker.build("sk8m8/sk8m8-api")
+        app = docker.build("sk8m8-api")
     }
 
     stage('Push') {
