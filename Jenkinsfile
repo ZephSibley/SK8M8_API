@@ -9,13 +9,7 @@ node {
         app = docker.build("sk8m8/sk8m8-api")
     }
 
-    stage('Test') {
-        app.inside("""--entrypoint=''""") {
-            sh 'dotnet test'
-        }
-    }
-
-    stage('Push image') {
+    stage('Push') {
         docker.withRegistry('http://localhost:4000') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
