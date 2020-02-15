@@ -10,7 +10,7 @@ node {
     }
 
     stage('Test') {
-        app.inside {
+        app.inside("""--entrypoint=''""") {
             sh 'dotnet test'
         }
     }
