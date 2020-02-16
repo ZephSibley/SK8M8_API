@@ -21,4 +21,7 @@ RUN dotnet publish "Sk8M8_API.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+
+HEALTHCHECK CMD curl --fail http://localhost:80/ || exit 1
+
 ENTRYPOINT ["dotnet", "Sk8M8_API.dll"]
