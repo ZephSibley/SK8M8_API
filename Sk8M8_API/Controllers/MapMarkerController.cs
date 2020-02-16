@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NetTopologySuite;
 using Sk8M8_API.Models;
 using System;
 using System.Linq;
@@ -139,10 +138,7 @@ namespace Sk8M8_API.Controllers
             double Radius
         )
         {
-            // https://docs.microsoft.com/en-us/ef/core/modeling/spatial
-            // https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-2.2
-            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
-            var currentLocation = geometryFactory.CreatePoint(new GeoAPI.Geometries.Coordinate(Latitude, Longitude));
+            var currentLocation = StorageUtils.CreateGeoPoint(Latitude, Longitude);
 
             var discoveredMarkers = Context.MapMarker
                 .Where(row => row.Point.IsWithinDistance(currentLocation, Radius))

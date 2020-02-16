@@ -25,8 +25,7 @@ namespace Sk8M8_API
         /// <returns>Point object</returns>
         public static Point CreateGeoPoint(double latitude, double longitude)
         {
-            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
-            var point = geometryFactory.CreatePoint(new Coordinate(latitude, longitude));
+            var point = new NetTopologySuite.Geometries.Point(latitude, longitude);
 
             return point;
         }
