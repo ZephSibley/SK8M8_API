@@ -1,5 +1,5 @@
-﻿using GeoAPI.Geometries;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using System;
 
@@ -89,7 +89,7 @@ namespace Sk8M8_API.Migrations
                     DateUpdated = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     LocationCategory = table.Column<string>(nullable: true),
-                    Point = table.Column<IPoint>(nullable: true),
+                    Point = table.Column<Point>(nullable: true),
                     CreatorId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>

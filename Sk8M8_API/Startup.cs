@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SignalRChat.Hubs;
 using Sk8M8_API.DataClasses;
@@ -32,8 +33,7 @@ namespace Sk8M8_API
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         o => o.UseNetTopologySuite()
                     )
-                )
-               .BuildServiceProvider();
+                );
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -90,7 +90,7 @@ namespace Sk8M8_API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -102,18 +102,16 @@ namespace Sk8M8_API
                 app.UseHsts();
             }
 
+            app.UseRouting();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
-            app.UseSignalR(hubs =>
-            {
-                hubs.MapHub<ChatHub>("/chat");
-            });
 
-            app.UseMvc(routes =>
-           {
-               routes.MapRoute("default", "{controller}/{action}/{id?}");
-           });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapControllerRoute("default", "{controller=Account}/{action=Me}/{id?}");
+            });
         }
     }
 }

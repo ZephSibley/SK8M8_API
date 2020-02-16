@@ -1,4 +1,4 @@
-﻿using GeoAPI.Geometries;
+﻿using NetTopologySuite.Geometries;
 
 namespace Sk8M8_API.Models
 {
@@ -6,7 +6,7 @@ namespace Sk8M8_API.Models
     {
         public string Name { get; set; }
         public string LocationCategory { get; set; }
-        public IPoint Point { get; set; }
+        public Point Point { get; set; }
         public Media Video { get; set; }
         public Client Creator { get; set; }
     }

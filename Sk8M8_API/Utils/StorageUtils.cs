@@ -4,10 +4,10 @@ using FFMpegCore.Enums;
 using FFMpegCore.FFMPEG;
 using FFMpegCore.FFMPEG.Enums;
 using FFMpegCore.FFMPEG.Exceptions;
-using GeoAPI.Geometries;
 using Microsoft.AspNetCore.Http;
 using nClam;
 using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using System;
 using System.IO;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace Sk8M8_API
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
         /// <returns>Point object</returns>
-        public static IPoint CreateGeoPoint(double latitude, double longitude)
+        public static Point CreateGeoPoint(double latitude, double longitude)
         {
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
             var point = geometryFactory.CreatePoint(new Coordinate(latitude, longitude));

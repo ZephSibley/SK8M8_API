@@ -1,5 +1,5 @@
-﻿using GeoAPI.Geometries;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using System;
 
@@ -15,7 +15,7 @@ namespace Sk8M8_API.Migrations
             migrationBuilder.DropTable(
                 name: "Category");
 
-            migrationBuilder.AlterColumn<IPoint>(
+            migrationBuilder.AlterColumn<Point>(
                 name: "Geolocation",
                 table: "Client",
                 nullable: true,
@@ -88,7 +88,7 @@ namespace Sk8M8_API.Migrations
                 name: "Geolocation",
                 table: "Client",
                 nullable: true,
-                oldClrType: typeof(IPoint),
+                oldClrType: typeof(Point),
                 oldNullable: true);
 
             migrationBuilder.CreateTable(
