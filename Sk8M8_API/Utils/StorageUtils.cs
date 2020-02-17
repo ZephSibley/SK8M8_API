@@ -146,11 +146,12 @@ namespace Sk8M8_API
         /// <returns>A GUID representing the new name of the stored file</returns>
         public static async Task<string> StoreFile(FileInfo file)
         {
-            string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
-            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-            
-            string blobContainerName = Environment.GetEnvironmentVariable("BLOB_STORAGE");
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
+            BlobServiceClient blobServiceClient = new BlobServiceClient(
+                Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING")
+            );
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(
+                Environment.GetEnvironmentVariable("BLOB_STORAGE")
+            );
 
             string fileName = Guid.NewGuid().ToString();
             BlobClient blobClient = containerClient.GetBlobClient(fileName);
