@@ -148,8 +148,9 @@ namespace Sk8M8_API
         {
             string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
             BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-            // TODO: Make container name an env variable
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("sk8m8-test");
+            
+            string blobContainerName = Environment.GetEnvironmentVariable("BLOB_STORAGE");
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
 
             string fileName = Guid.NewGuid().ToString();
             BlobClient blobClient = containerClient.GetBlobClient(fileName);
