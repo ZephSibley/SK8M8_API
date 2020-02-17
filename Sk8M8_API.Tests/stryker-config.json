@@ -1,0 +1,16 @@
+{
+  "stryker-config": {
+    "reporters": [
+      "Progress",
+      "ClearText"
+    ],
+    "log-level": "info",
+    "timeout-ms": 10000,
+    "log-file": true,
+    "project-file": "Sk8M8_API.csproj"
+  },
+  "files-to-exclude": [
+    "./Sk8M8_API.cs",
+    "./Startup.cs"
+  ]
+}
