@@ -4,7 +4,7 @@ using Bcrypt = BCrypt.Net.BCrypt;
 namespace Sk8M8_API.Services
 {
 
-    public class PasswordService
+    public static class PasswordService
     {
         /// <summary>
         /// Hashes the password provided with BCrypt and returns it
