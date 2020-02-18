@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using SignalRChat.Hubs;
 using Sk8M8_API.DataClasses;
 using Sk8M8_API.Models;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,7 +31,9 @@ namespace Sk8M8_API
         {
             services.AddEntityFrameworkNpgsql()
                .AddDbContext<SkateContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                    options.UseNpgsql(Configuration.GetConnectionString(
+                        Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+                    ),
                         o => o.UseNetTopologySuite()
                     )
                 );
