@@ -9,6 +9,7 @@ using nClam;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,6 +32,8 @@ namespace Sk8M8_API
         }
         public static bool ValidateExtensions(this FileInfo file, string[] permittedExtensions)
         {
+            Contract.Requires(file != null);
+
             var fileExt = Path.GetExtension(file.Name).ToLowerInvariant();
 
             if (string.IsNullOrEmpty(fileExt) || !permittedExtensions.Contains(fileExt))
@@ -90,6 +93,8 @@ namespace Sk8M8_API
         /// <returns>The same file, stripped of metadata</returns>
         public static FileInfo StripExif(this FileInfo file)
         {
+            Contract.Requires(file != null);
+
             ExifLibrary.ImageFile image = ExifLibrary.ImageFile.FromFile(file.FullName);
 
             image.Properties.Clear();
@@ -104,6 +109,8 @@ namespace Sk8M8_API
         /// <returns>The path to the file on disk</returns>
         public static async Task<FileInfo> CreateTempFile(this IFormFile file)
         {
+            Contract.Requires(file != null);
+
             var filePath = Path.GetTempFileName();
 
             using (var stream = System.IO.File.Create(filePath))
@@ -120,6 +127,8 @@ namespace Sk8M8_API
         /// <returns>bool</returns>
         public static async Task<bool> FileIsSafe(this FileInfo file)
         {
+            Contract.Requires(file != null);
+
             var clam = new ClamClient("localhost", 3310);
             var scanResult = await clam.ScanFileOnServerAsync(file.FullName);
 
@@ -146,6 +155,8 @@ namespace Sk8M8_API
         /// <returns>A GUID representing the new name of the stored file</returns>
         public static async Task<string> StoreFile(FileInfo file)
         {
+            Contract.Requires(file != null);
+
             BlobServiceClient blobServiceClient = new BlobServiceClient(
                 Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING")
             );

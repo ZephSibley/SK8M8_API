@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Sk8M8_API.Models;
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -31,6 +32,8 @@ namespace Sk8M8_API.Controllers
             DataClasses.PointCreationRequest marker
         )
         {
+            Contract.Requires(marker != null);
+
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 

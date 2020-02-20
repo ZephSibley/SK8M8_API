@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sk8M8_API.Models;
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace Sk8M8_API.Controllers
         [AllowAnonymous]
         public ActionResult Create([FromBody] Client client)
         {
+            Contract.Requires(client != null);
+
             var clientRecord = new Client()
             {
                 Username = client.Username,
@@ -46,6 +49,8 @@ namespace Sk8M8_API.Controllers
         [AllowAnonymous]
         public ActionResult Login([FromBody] Client Client)
         {
+            Contract.Requires(Client != null);
+
             var loginToken = new Resources.LoginTokenResource()
             {
                 Success = false
