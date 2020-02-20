@@ -31,9 +31,8 @@ namespace Sk8M8_API
         {
             services.AddEntityFrameworkNpgsql()
                .AddDbContext<SkateContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString(
-                        Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
-                    ),
+                    options.UseNpgsql(
+                        Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"),
                         o => o.UseNetTopologySuite()
                     )
                 );
