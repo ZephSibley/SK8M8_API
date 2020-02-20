@@ -111,7 +111,7 @@ namespace Sk8M8_API.Controllers
             IFormFile image
             )
         {
-            string[] permittedExtensions = { ".png", ".jpg" };
+            string[] permittedExtensions = { ".PNG", ".JPG" };
 
             var tempFile = await image.CreateTempFile();
 
