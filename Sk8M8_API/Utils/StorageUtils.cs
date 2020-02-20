@@ -108,7 +108,7 @@ namespace Sk8M8_API
 
             using (var stream = System.IO.File.Create(filePath))
             {
-                await file.CopyToAsync(stream).ConfigureAwait(false);
+                await file.CopyToAsync(stream);
             }
 
             return new FileInfo(filePath);
@@ -121,7 +121,7 @@ namespace Sk8M8_API
         public static async Task<bool> FileIsSafe(this FileInfo file)
         {
             var clam = new ClamClient("localhost", 3310);
-            var scanResult = await clam.ScanFileOnServerAsync(file.FullName).ConfigureAwait(false);
+            var scanResult = await clam.ScanFileOnServerAsync(file.FullName);
 
             switch (scanResult.Result)
             {
@@ -160,7 +160,7 @@ namespace Sk8M8_API
 
             using (FileStream uploadFileStream = File.OpenRead(file.FullName))
             {
-                await blobClient.UploadAsync(uploadFileStream).ConfigureAwait(false);
+                await blobClient.UploadAsync(uploadFileStream);
             }
 
             return fileName;

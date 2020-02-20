@@ -50,7 +50,7 @@ namespace Sk8M8_API.Controllers
                 });
             }
 
-            var newVideoRecord = await CreateMediaRecordForVideo(marker.Video, relevantUser).ConfigureAwait(false);
+            var newVideoRecord = await CreateMediaRecordForVideo(marker.Video, relevantUser);
             if (newVideoRecord == null) { return Json(new Resources.BaseResultResource() { Success = false }); }
 
             Context.Media.Add(newVideoRecord);
@@ -94,9 +94,9 @@ namespace Sk8M8_API.Controllers
         private async Task<Media> CreateMediaRecordForVideo(IFormFile file, Client user)
         {
 
-            var tempFile = await file.CreateTempFile().ConfigureAwait(false);
+            var tempFile = await file.CreateTempFile();
 
-            if (!await tempFile.FileIsSafe().ConfigureAwait(false))
+            if (!await tempFile.FileIsSafe())
             {
                 if (tempFile.Exists)
                 {
@@ -113,9 +113,7 @@ namespace Sk8M8_API.Controllers
                 return null;
             }
 
-            var fileName = await StorageUtils.StoreFile(
-                tempVideoFile.Transcode()
-            ).ConfigureAwait(false);
+            var fileName = await StorageUtils.StoreFile(tempVideoFile.Transcode());
             tempFile.Delete();
 
             var newMedia = new Media()
