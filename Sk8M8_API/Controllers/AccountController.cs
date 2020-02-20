@@ -108,14 +108,14 @@ namespace Sk8M8_API.Controllers
         {
             string[] permittedExtensions = { ".png", ".jpg" };
 
-            var tempFile = await image.CreateTempFile();
+            var tempFile = await image.CreateTempFile().ConfigureAwait(false);
 
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
             if (
                 relevantUser == null ||
-                !await tempFile.FileIsSafe() ||
+                !await tempFile.FileIsSafe().ConfigureAwait(false) ||
                 !tempFile.ValidateExtensions(permittedExtensions)
                 )
             {
@@ -129,7 +129,9 @@ namespace Sk8M8_API.Controllers
                 );
             }
 
-            var fileName = await StorageUtils.StoreFile(tempFile.StripExif());
+            var fileName = await StorageUtils.StoreFile(
+                tempFile.StripExif()
+            ).ConfigureAwait(false);
             tempFile.Delete();
 
             relevantUser.Avatar = fileName;
