@@ -53,17 +53,21 @@ namespace Sk8M8_API.Controllers
                 });
             }
 
-            var newVideoRecord = await CreateMediaRecordForVideo(marker.Video, relevantUser);
-            if (newVideoRecord == null) { return Json(new Resources.BaseResultResource() { Success = false }); }
+            Media markerVideoRecord = null;
+            if (marker.Video != null)
+            {
+                markerVideoRecord = await CreateMediaRecordForVideo(marker.Video, relevantUser);
+                if (markerVideoRecord == null) { return Json(new Resources.BaseResultResource() { Success = false }); }
 
-            Context.Media.Add(newVideoRecord);
+                Context.Media.Add(markerVideoRecord);
+            }
 
             var newMarkerRecord = new MapMarker()
             {
-                Name = marker.Name,
-                LocationCategory = marker.Category,
+                Name = marker.Name, // TODO: Sanitise/Validate
+                LocationCategory = marker.Category, // TODO: Validate
                 Point = markerPoint,
-                Video = newVideoRecord,
+                Video = markerVideoRecord,
                 Creator = relevantUser,
             };
             Context.MapMarker.Add(newMarkerRecord);
