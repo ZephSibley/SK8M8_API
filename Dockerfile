@@ -1,6 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
-EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
@@ -22,6 +21,8 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 
+ENV ASPNETCORE_URLS="https://+"
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path="./certs.pfx"
 HEALTHCHECK CMD curl --fail http://localhost:80/ || exit 1
 
 ENTRYPOINT ["dotnet", "Sk8M8_API.dll"]
