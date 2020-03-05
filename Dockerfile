@@ -22,7 +22,7 @@ WORKDIR /app
 COPY --from=publish /app .
 
 ENV ASPNETCORE_URLS="https://+"
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path="/dotnet-cert.pfx"
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path="/certs/dotnet-cert.pfx"
 HEALTHCHECK CMD curl --fail http://localhost:80/ || exit 1
 
 ENTRYPOINT ["dotnet", "Sk8M8_API.dll"]
