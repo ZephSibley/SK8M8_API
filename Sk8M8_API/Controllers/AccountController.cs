@@ -147,12 +147,12 @@ namespace Sk8M8_API.Controllers
             );
         }
         [HttpPost]
-        public ActionResult UpdateStatus([FromBody] string status)
+        public ActionResult UpdateStatus([FromBody] DataClasses.StatusUpdateRequest status)
         {
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
-            relevantUser.Status = status;
+            relevantUser.Status = status.status;
             Context.Client.Update(relevantUser);
             Context.SaveChanges();
 
