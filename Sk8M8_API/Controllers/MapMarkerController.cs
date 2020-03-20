@@ -57,7 +57,13 @@ namespace Sk8M8_API.Controllers
             if (marker.Video != null)
             {
                 markerVideoRecord = await CreateMediaRecordForVideo(marker.Video, relevantUser);
-                if (markerVideoRecord == null) { return Json(new Resources.BaseResultResource() { Success = false }); }
+                if (markerVideoRecord == null) 
+                {
+                    return Json(new Resources.ResultResource() {
+                        Success = false,
+                        Msg = "Video processing failed"
+                    });
+                }
 
                 Context.Media.Add(markerVideoRecord);
             }
