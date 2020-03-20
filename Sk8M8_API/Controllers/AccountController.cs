@@ -23,7 +23,7 @@ namespace Sk8M8_API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Create([FromBody] Client client)
+        public ActionResult Create([FromBody] DataClasses.UserCreationRequest client)
         {
             Contract.Requires(client != null);
 
