@@ -36,9 +36,7 @@ namespace Sk8M8_API.Controllers
 
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
-
             var relevantCategory = Context.LocationType.FirstOrDefault<LocationType>(x => x.Name == marker.Category);
-            if (relevantCategory == null) { return Json(new Resources.BaseResultResource() { Success = false }); }
 
             var markerPoint = StorageUtils.CreateGeoPoint(marker.Latitude, marker.Longitude);
             var proximityCheck = Context.MapMarker
@@ -70,8 +68,8 @@ namespace Sk8M8_API.Controllers
 
             var newMarkerRecord = new MapMarker()
             {
-                Name = marker.Name, // TODO: Sanitise/Validate
-                LocationCategory = marker.Category, // TODO: Validate
+                Name = marker.Name,
+                LocationCategory = marker.Category,
                 Point = markerPoint,
                 Video = markerVideoRecord,
                 Creator = relevantUser,
@@ -183,6 +181,14 @@ namespace Sk8M8_API.Controllers
                 .ToList();
 
             return Json(locationTypes);
+        }
+        [HttpPost]
+        public ActionResult VerifyLocationType(string locationType)
+        {
+            var relevantCategory = Context.LocationType.First<LocationType>(x => x.Name == locationType);
+            if (relevantCategory == null) { return Json($"Location type \"{locationType}\" not recognised."); }
+
+            return Json(true);
         }
     }
 }
