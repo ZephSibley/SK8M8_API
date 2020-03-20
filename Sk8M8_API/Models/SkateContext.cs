@@ -19,5 +19,15 @@ namespace Sk8M8_API.Models
         public DbSet<MediaRating> MediaRating { get; set; }
         public DbSet<MarkerCategory> MarkerCategory { get; set; }
         public DbSet<ClientMarker> ClientMarker { get; set; }
-    }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<LocationType>().HasData(
+               new LocationType { Id = 1, Name = "SkatePark" },
+               new LocationType { Id = 2, Name = "Rail" },
+               new LocationType { Id = 3, Name = "Ramp" },
+               new LocationType { Id = 4, Name = "Plaza" }
+            );
+        }
+    }   
 }
