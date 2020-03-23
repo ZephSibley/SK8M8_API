@@ -26,7 +26,10 @@ namespace Sk8M8_API.Models
                new LocationType { Id = 1, Name = "SkatePark" },
                new LocationType { Id = 2, Name = "Rail" },
                new LocationType { Id = 3, Name = "Ramp" },
-               new LocationType { Id = 4, Name = "Plaza" }
+               new LocationType { Id = 4, Name = "Plaza" },
+               new LocationType { Id = 5, Name = "Pump track"},
+               new LocationType { Id = 6, Name = "Dirt track"},
+               new LocationType { Id = 7, Name = "Skate path"}
             );
         }
     }   
