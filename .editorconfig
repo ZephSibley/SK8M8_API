@@ -11,3 +11,9 @@ dotnet_diagnostic.CA1303.severity = silent
 
 # CA1305: Specify IFormatProvider
 dotnet_diagnostic.CA1305.severity = silent
+
+# CA1814: Prefer jagged arrays over multidimensional
+dotnet_diagnostic.CA1814.severity = none
+
+# CA1707: Remove the underscores from assembly name Sk8M8_API.
+dotnet_diagnostic.CA1707.severity = none

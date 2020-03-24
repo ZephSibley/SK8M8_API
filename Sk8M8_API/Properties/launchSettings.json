@@ -22,6 +22,8 @@
       "launchBrowser": true,
       "launchUrl": "api/values",
       "environmentVariables": {
+        "DB_CONNECTION_STRING": "Host=localhost;Port=5432;Username=postgres;Password=password;Database=sk8m8;",
+        "JWT_SECRET": "442C1671997280016A12C7C987B223083CE54D6430BA02DB1E7DCCD64E763B16A8B26C5B777FCF1B3CBBC30B042965B591BAEDEDC8956CDD80929AE9601AEC9C",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
