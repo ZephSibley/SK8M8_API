@@ -39,9 +39,8 @@ namespace Sk8M8_API
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
-            var appSettings = appSettingsSection.Get<AppSettings>();
 
-            var key = Encoding.ASCII.GetBytes(appSettings.JwtSecret);
+            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
 
             services.AddAuthentication(x =>
             {

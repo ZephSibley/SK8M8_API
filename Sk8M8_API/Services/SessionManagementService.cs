@@ -11,18 +11,16 @@ namespace Sk8M8_API.Services
 {
     public class SessionManagementService : ISessionManagementService
     {
-        private readonly AppSettings _appSettings;
         private readonly JwtSecurityTokenHandler _tokenHandler;
 
-        public SessionManagementService(IOptions<AppSettings> appSettings)
+        public SessionManagementService()
         {
-            _appSettings = appSettings.Value;
             _tokenHandler = new JwtSecurityTokenHandler();
         }
 
         public string Authenticate(Client client)
         {
-            var key = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
+            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
