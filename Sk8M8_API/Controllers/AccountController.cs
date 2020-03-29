@@ -27,6 +27,11 @@ namespace Sk8M8_API.Controllers
         {
             Contract.Requires(client != null);
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var clientRecord = new Client()
             {
                 Username = client.Username,
@@ -171,10 +176,15 @@ namespace Sk8M8_API.Controllers
         [HttpPost]
         public ActionResult UpdateStatus([FromBody] DataClasses.StatusUpdateRequest status)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
 
-            relevantUser.Status = status.status;
+            relevantUser.Status = status.Status;
             Context.Client.Update(relevantUser);
             Context.SaveChanges();
 

@@ -33,6 +33,10 @@ namespace Sk8M8_API.Controllers
         )
         {
             Contract.Requires(marker != null);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));

@@ -6,6 +6,6 @@ namespace Sk8M8_API.DataClasses
     {
         [Required]
         [StringLength(200, ErrorMessage = "Status is too long")]
-        public string status { get; set; }
+        public string Status { get; set; }
     }
 }
