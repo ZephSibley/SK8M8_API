@@ -31,6 +31,13 @@ namespace Sk8M8_API.Models
                new LocationType { Id = 6, Name = "Dirt track"},
                new LocationType { Id = 7, Name = "Skate path"}
             );
+
+            modelBuilder.Entity<Client>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+            modelBuilder.Entity<Client>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
         }
     }   
 }
