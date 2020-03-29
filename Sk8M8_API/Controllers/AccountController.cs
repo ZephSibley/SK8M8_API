@@ -46,6 +46,28 @@ namespace Sk8M8_API.Controllers
         }
 
         [HttpPost]
+        public ActionResult VerifyUsernameUniqueness(string username)
+        {
+            if (Context.Client.Any(x => x.Username == username))
+            {
+                return Json("Username already in use");
+            }
+
+            return Json(true);
+        }
+
+        [HttpPost]
+        public ActionResult VerifyEmailUniqueness(string email)
+        {
+            if (Context.Client.Any(x => x.Email == email))
+            {
+                return Json("Email already in use");
+            }
+
+            return Json(true);
+        }
+
+        [HttpPost]
         [AllowAnonymous]
         public ActionResult Login([FromBody] Client Client)
         {

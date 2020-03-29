@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Sk8M8_API.DataClasses
 {
@@ -6,6 +7,7 @@ namespace Sk8M8_API.DataClasses
     {
         [Required]
         [StringLength(3, ErrorMessage = "Username is not long enough")]
+        [Remote(action: "VerifyUsernameUniqueness", controller: "Account")]
         public string Username { get; set; }
 
         [Required]
@@ -14,6 +16,7 @@ namespace Sk8M8_API.DataClasses
 
         [Required]
         [EmailAddress]
+        [Remote(action: "VerifyEmailUniqueness", controller: "Account")]
         public string Email { get; set; }
     }
 }
