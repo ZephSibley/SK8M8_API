@@ -85,7 +85,7 @@ namespace Sk8M8_API
                 options.AddPolicy(AllowWebClientOrigin,
                 builder =>
                 {
-                    builder.WithOrigins("http://www.sk8m8.co", "http://sk8m8.co");
+                    builder.WithOrigins("https://www.sk8m8.co", "https://sk8m8.co");
                 });
             });
 
