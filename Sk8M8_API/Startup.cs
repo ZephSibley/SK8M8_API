@@ -23,7 +23,7 @@ namespace Sk8M8_API
         {
             Configuration = configuration;
         }
-
+        readonly string AllowWebClientOrigin = "_AllowWebClientOrigin";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -80,6 +80,15 @@ namespace Sk8M8_API
 
             services.AddScoped<Services.ISessionManagementService, Services.SessionManagementService>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowWebClientOrigin,
+                builder =>
+                {
+                    builder.WithOrigins("http://www.sk8m8.co", "http://sk8m8.co");
+                });
+            });
+
             services.AddSignalR();
             services.AddMvc(o =>
            {
@@ -88,10 +97,11 @@ namespace Sk8M8_API
                    .Build();
                o.Filters.Add(new AuthorizeFilter(policy));
            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(
+        public void Configure(
             IApplicationBuilder app,
             IWebHostEnvironment env,
             SkateContext context
@@ -107,7 +117,7 @@ namespace Sk8M8_API
 
             app.UseRouting();
             app.UseAuthentication();
-            app.UseCors("CorsPolicy");
+            app.UseCors(AllowWebClientOrigin);
 
             app.UseEndpoints(endpoints =>
             {
