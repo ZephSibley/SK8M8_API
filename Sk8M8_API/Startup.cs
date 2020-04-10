@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,9 +21,14 @@ namespace Sk8M8_API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+        public Startup(
+            IConfiguration configuration,
+            IWebHostEnvironment env
+        )
         {
             Configuration = configuration;
+            _env = env;
         }
         readonly string AllowWebClientOrigin = "_AllowWebClientOrigin";
         public IConfiguration Configuration { get; }
@@ -76,6 +83,21 @@ namespace Sk8M8_API
                         return Task.CompletedTask;
                     }
                 };
+            }).AddCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = _env.IsDevelopment()
+                  ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.Lax;
+            });
+
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.MinimumSameSitePolicy = SameSiteMode.Lax;
+                options.HttpOnly = HttpOnlyPolicy.None;
+                options.Secure = _env.IsDevelopment()
+                  ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
             });
 
             services.AddScoped<Services.ISessionManagementService, Services.SessionManagementService>();
@@ -118,6 +140,7 @@ namespace Sk8M8_API
             }
 
             app.UseRouting();
+            app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseCors(AllowWebClientOrigin);
 
