@@ -88,14 +88,14 @@ namespace Sk8M8_API
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = _env.IsDevelopment()
                   ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
-                options.Cookie.SameSite = SameSiteMode.Lax;
+                options.Cookie.SameSite = SameSiteMode.None;
             });
 
 
             services.Configure<CookiePolicyOptions>(options =>
             {
-                options.MinimumSameSitePolicy = SameSiteMode.Lax;
-                options.HttpOnly = HttpOnlyPolicy.None;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.HttpOnly = HttpOnlyPolicy.Always;
                 options.Secure = _env.IsDevelopment()
                   ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
             });
