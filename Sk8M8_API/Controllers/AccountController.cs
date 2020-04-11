@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sk8M8_API.Models;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Claims;
@@ -71,7 +74,7 @@ namespace Sk8M8_API.Controllers
 
             return Json(true);
         }
-
+        
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Login([FromBody] Client Client)
@@ -103,6 +106,44 @@ namespace Sk8M8_API.Controllers
             Context.SaveChanges();
 
             return Json(loginToken);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> SiteLogin([FromBody] Client Client)
+        {
+            Contract.Requires(Client != null);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, Client.Email),
+                new Claim("Username", Client.Username)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(100),
+                IsPersistent = true,
+                IssuedUtc = DateTimeOffset.UtcNow
+            };
+
+            try
+            {
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+            }
+            catch
+            {
+                return Json(new Resources.BaseResultResource() { Success = false });
+                throw;
+            }
+            
+            return Json(new Resources.BaseResultResource() { Success = true });
         }
         public ActionResult Me()
         {
