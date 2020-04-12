@@ -113,6 +113,13 @@ namespace Sk8M8_API.Controllers
         {
             Contract.Requires(Client != null);
 
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);
+            var loginSuccess = Services.PasswordService.CheckPassword(Client.Password, relevantUser.Password);
+            if (loginSuccess != Enums.ValidatePasswordStatus.Valid)
+            {
+                return Json(new Resources.BaseResultResource() { Success = false });
+            }
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, Client.Email),
