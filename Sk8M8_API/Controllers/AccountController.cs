@@ -124,6 +124,7 @@ namespace Sk8M8_API.Controllers
             {
                 new Claim(ClaimTypes.Name, Client.Email),
                 new Claim("Username", Client.Username)
+                // new Claim(ClaimTypes.Role, "Administrator"),
             };
 
             var claimsIdentity = new ClaimsIdentity(
