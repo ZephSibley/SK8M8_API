@@ -149,7 +149,10 @@ namespace Sk8M8_API.Controllers
                 return Json(new Resources.BaseResultResource() { Success = false });
                 throw;
             }
-            
+
+            Context.ClientLogin.Add(new ClientLogin() { Client = relevantUser, IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
+            Context.SaveChanges();
+
             return Json(new Resources.BaseResultResource() { Success = true });
         }
         public async Task<ActionResult> SiteLogout()
