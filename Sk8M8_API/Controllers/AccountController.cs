@@ -154,16 +154,8 @@ namespace Sk8M8_API.Controllers
         }
         public async Task<ActionResult> SiteLogout()
         {
-            try
-            {
-                await HttpContext.SignOutAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme);
-            }
-            catch
-            {
-                return Json(new Resources.BaseResultResource() { Success = false });
-                throw;
-            }
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
 
             return Json(new Resources.BaseResultResource() { Success = true });
         }
