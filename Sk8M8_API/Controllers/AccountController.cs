@@ -152,6 +152,21 @@ namespace Sk8M8_API.Controllers
             
             return Json(new Resources.BaseResultResource() { Success = true });
         }
+        public async Task<ActionResult> SiteLogout()
+        {
+            try
+            {
+                await HttpContext.SignOutAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme);
+            }
+            catch
+            {
+                return Json(new Resources.BaseResultResource() { Success = false });
+                throw;
+            }
+
+            return Json(new Resources.BaseResultResource() { Success = true });
+        }
         public ActionResult Me()
         {
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
