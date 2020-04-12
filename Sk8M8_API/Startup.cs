@@ -110,7 +110,6 @@ namespace Sk8M8_API
                     builder.WithOrigins("https://sk8m8.co", "https://www.sk8m8.co")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowAnyHeader()
                         .AllowCredentials();
                 });
             });
@@ -142,7 +141,7 @@ namespace Sk8M8_API
             }
 
             app.UseRouting();
-            // app.UseCors(AllowWebClientOrigin);
+            app.UseCors(AllowWebClientOrigin);
             app.UseCookiePolicy();
             app.UseAuthentication();
             
