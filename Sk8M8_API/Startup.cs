@@ -109,7 +109,9 @@ namespace Sk8M8_API
                 {
                     builder.WithOrigins("https://sk8m8.co", "https://www.sk8m8.co")
                         .AllowAnyHeader()
-                        .AllowAnyMethod();
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                 });
             });
 
