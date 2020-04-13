@@ -123,7 +123,7 @@ namespace Sk8M8_API.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, Client.Email),
-                new Claim("Username", Client.Username)
+                new Claim("Username", relevantUser.Username)
                 // new Claim(ClaimTypes.Role, "Administrator"),
             };
 
