@@ -139,7 +139,7 @@ namespace Sk8M8_API.Controllers
 
             return newMedia;
         }
-
+        [HttpGet]
         /// <summary>
         /// Finds all Map Markers within a radius to the given LatLong
         /// </summary>
@@ -162,7 +162,7 @@ namespace Sk8M8_API.Controllers
             //.OrderBy(c => c.Location.Distance(currentLocation))
             return Json(discoveredMarkers);
         }
-
+        [HttpGet]
         /// <summary>
         /// Single Map Marker Entry
         /// </summary>
@@ -178,6 +178,7 @@ namespace Sk8M8_API.Controllers
 
             return Json(markerDetail);
         }
+        [HttpGet]
         public ActionResult LocationTypes()
         {
             var locationTypes = Context.LocationType

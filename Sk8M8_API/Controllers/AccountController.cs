@@ -156,6 +156,7 @@ namespace Sk8M8_API.Controllers
 
             return Json(new Resources.BaseResultResource() { Success = true });
         }
+        [HttpGet]
         public async Task<ActionResult> SiteLogout()
         {
             await HttpContext.SignOutAsync(
@@ -163,6 +164,7 @@ namespace Sk8M8_API.Controllers
 
             return Json(new Resources.BaseResultResource() { Success = true });
         }
+        [HttpGet]
         public ActionResult Me()
         {
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
