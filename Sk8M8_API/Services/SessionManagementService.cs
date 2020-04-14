@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Sk8M8_API.DataClasses;
+﻿using Microsoft.IdentityModel.Tokens;
 using Sk8M8_API.Models;
 using System;
 using System.IdentityModel.Tokens.Jwt;
