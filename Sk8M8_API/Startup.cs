@@ -11,12 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using SignalRChat.Hubs;
 using Sk8M8_API.DataClasses;
 using Sk8M8_API.Models;
 using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Sk8M8_API
 {
@@ -65,25 +63,6 @@ namespace Sk8M8_API
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
-                // Allow JWT Auth handler to read access tokens
-                // on incoming WebSocket/Server-Sent Event requests
-                x.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = context =>
-                    {
-                        var accessToken = context.Request.Query["access_token"];
-
-                        // If the request is for our hub...
-                        var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) &&
-                            (path.StartsWithSegments("/hubs/chat")))
-                        {
-                            // Read the token out of the query string
-                            context.Token = accessToken;
-                        }
-                        return Task.CompletedTask;
-                    }
-                };
             }).AddCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
@@ -115,7 +94,6 @@ namespace Sk8M8_API
                     });
             });
 
-            services.AddSignalR();
             services.AddMvc(o =>
            {
                var policy = new AuthorizationPolicyBuilder()
@@ -149,7 +127,6 @@ namespace Sk8M8_API
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<ChatHub>("/chat");
                 endpoints.MapControllerRoute("default", "{controller=Account}/{action=Me}/{id?}");
             });
         }
