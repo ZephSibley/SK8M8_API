@@ -166,7 +166,7 @@ namespace Sk8M8_API.Controllers
         public ActionResult Me()
         {
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
-            Client relevantUser = Context.Client.FirstOrDefault(x => x.Id == Convert.ToInt64(userClaim));
+            Client relevantUser = Context.Client.FirstOrDefault(x => x.Email == userClaim);
 
             return Json(
                 new { relevantUser.Username, relevantUser.Avatar, relevantUser.Status }
@@ -180,7 +180,7 @@ namespace Sk8M8_API.Controllers
         )
         {
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
-            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == userClaim);
 
             relevantUser.Geolocation = StorageUtils.CreateGeoPoint(latitude, longitude);
 
@@ -202,7 +202,7 @@ namespace Sk8M8_API.Controllers
             var tempFile = await image.CreateTempFile();
 
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
-            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == userClaim);
 
             if (
                 relevantUser == null ||
@@ -241,7 +241,7 @@ namespace Sk8M8_API.Controllers
             }
 
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
-            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == userClaim);
 
             relevantUser.Status = status.Status;
             Context.Client.Update(relevantUser);

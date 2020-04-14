@@ -39,7 +39,7 @@ namespace Sk8M8_API.Controllers
             }
 
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
-            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
+            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == userClaim);
             var relevantCategory = Context.LocationType.FirstOrDefault<LocationType>(x => x.Name == marker.Category);
 
             var markerPoint = StorageUtils.CreateGeoPoint(marker.Latitude, marker.Longitude);
