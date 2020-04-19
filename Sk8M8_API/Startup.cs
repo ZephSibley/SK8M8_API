@@ -48,28 +48,25 @@ namespace Sk8M8_API
 
             var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
 
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false; // make this true for use in production
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddJwtBearer(x =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            }).AddCookie(options =>
-            {
-                options.Cookie.HttpOnly = true;
-                options.Cookie.SecurePolicy = _env.IsDevelopment()
-                  ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
-                options.Cookie.SameSite = SameSiteMode.None;
-            });
+                    x.RequireHttpsMetadata = false; // make this true for use in production
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                }).AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = _env.IsDevelopment()
+                      ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
+                    options.Cookie.SameSite = SameSiteMode.None;
+                });
 
 
             services.Configure<CookiePolicyOptions>(options =>
