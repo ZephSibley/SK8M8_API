@@ -164,6 +164,7 @@ namespace Sk8M8_API.Controllers
 
             return Json(new Resources.BaseResultResource() { Success = true });
         }
+        [Authorize]
         [HttpGet]
         public ActionResult Me()
         {
