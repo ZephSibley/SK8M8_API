@@ -117,7 +117,7 @@ namespace Sk8M8_API.Controllers
             var loginSuccess = Services.PasswordService.CheckPassword(Client.Password, relevantUser.Password);
             if (loginSuccess != Enums.ValidatePasswordStatus.Valid)
             {
-                return Json(new Resources.BaseResultResource() { Success = false });
+                return StatusCode(401);
             }
 
             var claims = new List<Claim>
@@ -147,7 +147,7 @@ namespace Sk8M8_API.Controllers
             }
             catch
             {
-                return Json(new Resources.BaseResultResource() { Success = false });
+                return StatusCode(401);
                 throw;
             }
 
@@ -164,7 +164,6 @@ namespace Sk8M8_API.Controllers
 
             return Json(new Resources.BaseResultResource() { Success = true });
         }
-        [Authorize]
         [HttpGet]
         public ActionResult Me()
         {
