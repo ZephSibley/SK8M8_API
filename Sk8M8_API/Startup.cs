@@ -117,10 +117,10 @@ namespace Sk8M8_API
             }
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseCors(AllowWebClientOrigin);
             app.UseCookiePolicy();
-            app.UseAuthentication();
-            
 
             app.UseEndpoints(endpoints =>
             {
