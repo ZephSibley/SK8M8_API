@@ -107,63 +107,6 @@ namespace Sk8M8_API.Controllers
 
             return Json(loginToken);
         }
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<ActionResult> SiteLogin([FromBody] Client Client)
-        {
-            Contract.Requires(Client != null);
-
-            var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);
-            var loginSuccess = Services.PasswordService.CheckPassword(Client.Password, relevantUser.Password);
-            if (loginSuccess != Enums.ValidatePasswordStatus.Valid)
-            {
-                return StatusCode(401);
-            }
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, relevantUser.Id.ToString()),
-                new Claim("Username", relevantUser.Username)
-                // new Claim(ClaimTypes.Role, "Administrator"),
-            };
-
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var authProperties = new AuthenticationProperties
-            {
-                AllowRefresh = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(100),
-                IsPersistent = true,
-                IssuedUtc = DateTimeOffset.UtcNow
-            };
-
-            try
-            {
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(claimsIdentity),
-                        authProperties);
-            }
-            catch
-            {
-                return StatusCode(401);
-                throw;
-            }
-
-            Context.ClientLogin.Add(new ClientLogin() { Client = relevantUser, IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
-            Context.SaveChanges();
-
-            return Json(new Resources.BaseResultResource() { Success = true });
-        }
-        [HttpGet]
-        public async Task<ActionResult> SiteLogout()
-        {
-            await HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return Json(new Resources.BaseResultResource() { Success = true });
-        }
         [HttpGet]
         public ActionResult Me()
         {
