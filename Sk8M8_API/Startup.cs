@@ -51,7 +51,7 @@ namespace Sk8M8_API
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(x =>
                 {
-                    x.RequireHttpsMetadata = false; // make this true for use in production
+                    x.RequireHttpsMetadata = _env.IsDevelopment();
                     x.SaveToken = true;
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
