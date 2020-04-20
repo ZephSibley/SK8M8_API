@@ -78,31 +78,26 @@ namespace Sk8M8_API.Controllers
         {
             Contract.Requires(Client != null);
 
-            var loginToken = new Resources.LoginTokenResource()
-            {
-                Success = false
-            };
-
             var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Email == Client.Email);
-
-            if (relevantUser == null)
+            if (relevantUser != null)
             {
-                return Json(loginToken);
+                var loginSuccess = Services.PasswordService.CheckPassword(Client.Password, relevantUser.Password);
+                if (loginSuccess == Enums.ValidatePasswordStatus.Valid)
+                {
+                    Context.ClientLogin.Add(new ClientLogin() { Client = relevantUser, IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
+                    Context.SaveChanges();
+
+                    return Json(
+                        new Resources.LoginTokenResource()
+                            {
+                                JwtToken = _sessionManagementService.Authenticate(relevantUser),
+                                Success = true
+                            }
+                        );
+                }
             }
 
-            var loginSuccess = Services.PasswordService.CheckPassword(Client.Password, relevantUser.Password);
-
-            if (loginSuccess == Enums.ValidatePasswordStatus.Valid)
-            {
-                loginToken.JwtToken = _sessionManagementService.Authenticate(relevantUser);
-
-                loginToken.Success = true;
-            }
-
-            Context.ClientLogin.Add(new ClientLogin() { Client = relevantUser, IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
-            Context.SaveChanges();
-
-            return Json(loginToken);
+            return StatusCode(401);
         }
         [HttpGet]
         public ActionResult Me()
