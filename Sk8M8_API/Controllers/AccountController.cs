@@ -90,7 +90,7 @@ namespace Sk8M8_API.Controllers
                     return Json(
                         new Resources.LoginTokenResource()
                             {
-                                JwtToken = _sessionManagementService.Authenticate(relevantUser),
+                                Jwt = _sessionManagementService.Authenticate(relevantUser),
                                 Success = true
                             }
                         );

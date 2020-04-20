@@ -2,6 +2,6 @@
 {
     public class LoginTokenResource : BaseResultResource
     {
-        public string JwtToken { get; set; }
+        public string Jwt { get; set; }
     }
 }
