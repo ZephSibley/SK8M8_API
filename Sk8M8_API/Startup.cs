@@ -48,7 +48,7 @@ namespace Sk8M8_API
 
             var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(x =>
                 {
                     x.RequireHttpsMetadata = false; // make this true for use in production
@@ -60,22 +60,7 @@ namespace Sk8M8_API
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
-                }).AddCookie(options =>
-                {
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.SecurePolicy = _env.IsDevelopment()
-                      ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
-                    options.Cookie.SameSite = SameSiteMode.None;
                 });
-
-
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-                options.HttpOnly = HttpOnlyPolicy.Always;
-                options.Secure = _env.IsDevelopment()
-                  ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
-            });
 
             services.AddScoped<Services.ISessionManagementService, Services.SessionManagementService>();
 
@@ -118,9 +103,7 @@ namespace Sk8M8_API
 
             app.UseRouting();
             app.UseAuthentication();
-            app.UseAuthorization();
             app.UseCors(AllowWebClientOrigin);
-            app.UseCookiePolicy();
 
             app.UseEndpoints(endpoints =>
             {
