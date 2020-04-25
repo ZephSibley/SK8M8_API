@@ -10,7 +10,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.3.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="3.3.3" />
     <PackageReference Include="ExifLibrary" Version="1.0.13" />
     <PackageReference Include="FFMpegCore" Version="1.0.12" />
@@ -36,8 +35,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Kubernetes.Tools.Targets" Version="1.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="nClam" Version="4.0.1" />
     <PackageReference Include="NpgSql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />

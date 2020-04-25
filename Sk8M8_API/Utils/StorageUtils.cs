@@ -1,12 +1,10 @@
-﻿using Azure.Storage.Blobs;
-using FFMpegCore;
+﻿using FFMpegCore;
 using FFMpegCore.Enums;
 using FFMpegCore.FFMPEG;
 using FFMpegCore.FFMPEG.Enums;
 using FFMpegCore.FFMPEG.Exceptions;
 using Microsoft.AspNetCore.Http;
 using nClam;
-using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using System;
 using System.Diagnostics.Contracts;
@@ -157,24 +155,8 @@ namespace Sk8M8_API
         {
             Contract.Requires(file != null);
 
-            BlobServiceClient blobServiceClient = new BlobServiceClient(
-                Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING")
-            );
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(
-                Environment.GetEnvironmentVariable("BLOB_STORAGE")
-            );
 
-            string fileName = Guid.NewGuid().ToString();
-            BlobClient blobClient = containerClient.GetBlobClient(fileName);
-
-            Console.WriteLine("Uploading {0} to Blob storage as blob:\n\t {1}\n", fileName, blobClient.Uri);
-
-            using (FileStream uploadFileStream = File.OpenRead(file.FullName))
-            {
-                await blobClient.UploadAsync(uploadFileStream);
-            }
-
-            return fileName;
+            throw new NotImplementedException();
         }
     }
 }
