@@ -1,9 +1,5 @@
-﻿using FFMpegCore;
-using NetTopologySuite.Geometries;
-using System;
-using System.Collections.Generic;
+﻿using NetTopologySuite.Geometries;
 using System.IO;
-using System.Text;
 using Xunit;
 
 namespace Sk8M8_API.Tests

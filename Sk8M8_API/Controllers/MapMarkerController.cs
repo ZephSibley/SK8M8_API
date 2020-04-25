@@ -108,8 +108,8 @@ namespace Sk8M8_API.Controllers
         /// <returns>A media record or null</returns>
         private async Task<Media> CreateMediaRecordForVideo(IFormFile file, Client user)
         {
-
-            var tempFile = await file.CreateTempFile();
+            throw new NotImplementedException();
+            /* var tempFile = await file.CreateTempFile();
 
             if (!await tempFile.FileIsSafe())
             {
@@ -137,7 +137,7 @@ namespace Sk8M8_API.Controllers
                 Filename = fileName
             };
 
-            return newMedia;
+            return newMedia; */
         }
         [HttpGet]
         /// <summary>

@@ -1,9 +1,4 @@
-﻿using FFMpegCore;
-using FFMpegCore.Enums;
-using FFMpegCore.FFMPEG;
-using FFMpegCore.FFMPEG.Enums;
-using FFMpegCore.FFMPEG.Exceptions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using nClam;
 using NetTopologySuite.Geometries;
 using System;
@@ -41,48 +36,13 @@ namespace Sk8M8_API
             return true;
         }
         /// <summary>
-        /// Wrapper for file to video type conversion
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns>The input file as FFMpeg VideoInfo type or null</returns>
-        public static VideoInfo FileAsVideo(this FileInfo file)
-        {
-            VideoInfo videoFile = null;
-            try
-            {
-                videoFile = VideoInfo.FromFileInfo(file);
-            }
-            catch (FFMpegException e)
-            {
-                Console.WriteLine("Error in FFMpeg processing \n {0}", e);
-            }
-            return videoFile;
-        }
-        /// <summary>
         /// Transcodes video files to mp4
         /// </summary>
         /// <param name="file">Video File</param>
         /// <returns>The transcoded file</returns>
-        public static FileInfo Transcode(this VideoInfo video)
+        public static FileInfo Transcode(this FileInfo video)
         {
-            using (var encoder = new FFMpeg())
-            {
-                FileInfo outputFile = new FileInfo(Path.GetTempFileName());
-
-                encoder.OnProgress += (percentage) => Console.WriteLine("Transcoding video: Progress {0}%", percentage);
-
-                VideoInfo convertedVideo = encoder.Convert(
-                    video,
-                    outputFile,
-                    VideoType.Mp4,
-                    Speed.UltraFast,
-                    VideoSize.Original,
-                    AudioQuality.Hd,
-                    true
-                );
-
-                return convertedVideo.ToFileInfo();
-            }
+            throw new NotImplementedException();
         }
         /// <summary>
         /// Strips EXIF metadata from images
