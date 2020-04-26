@@ -157,7 +157,7 @@ namespace Sk8M8_API.Controllers
 
             var discoveredMarkers = Context.MapMarker
                 .Where(row => row.Point.IsWithinDistance(currentLocation, Radius))
-                .Select(row => new { row.Id, row.Point.Coordinate.X, row.Point.Coordinate.Y })
+                .Select(row => new { row.Id, coords = new double[] { row.Point.Coordinate.X, row.Point.Coordinate.Y } })
                 .ToList();
             //.OrderBy(c => c.Location.Distance(currentLocation))
             return Json(discoveredMarkers);
