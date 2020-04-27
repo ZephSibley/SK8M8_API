@@ -50,14 +50,14 @@ namespace Sk8M8_API.Controllers
             );
         }
 
-        [HttpPost]
-        public ActionResult VerifyUsernameUniqueness(string username)
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyUsernameUniqueness(string username)
         {
             return Context.Client.Any(x => x.Username == username) ? Json("Username already in use") : Json(true);
         }
 
-        [HttpPost]
-        public ActionResult VerifyEmailUniqueness(string email)
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyEmailUniqueness(string email)
         {
             return Context.Client.Any(x => x.Email == email) ? Json("Email already in use") : Json(true);
         }
