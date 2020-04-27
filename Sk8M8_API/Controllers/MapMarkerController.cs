@@ -41,8 +41,7 @@ namespace Sk8M8_API.Controllers
 
             var markerPoint = StorageUtils.CreateGeoPoint(marker.Latitude, marker.Longitude);
             var proximityCheck = Context.MapMarker
-                .Where(row => row.Point.IsWithinDistance(markerPoint, 0.0005))
-                .Any();
+                .Any(row => row.Point.IsWithinDistance(markerPoint, 0.0005));
             if (proximityCheck)
             {
                 return Json(new
