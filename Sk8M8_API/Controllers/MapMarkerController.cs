@@ -6,7 +6,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Sk8M8_API.Controllers
 {
@@ -135,7 +134,6 @@ namespace Sk8M8_API.Controllers
 
             return newMedia; */
         }
-        [HttpGet]
         /// <summary>
         /// Finds all Map Markers within a radius to the given LatLong
         /// </summary>
@@ -143,6 +141,7 @@ namespace Sk8M8_API.Controllers
         /// <param name="Longitude"></param>
         /// <param name="Radius"></param>
         /// <returns>List of MapMarker IDs and Coords</returns>
+        [HttpGet]
         public ActionResult Find(
             double Latitude,
             double Longitude,
@@ -158,12 +157,12 @@ namespace Sk8M8_API.Controllers
             //.OrderBy(c => c.Location.Distance(currentLocation))
             return Json(discoveredMarkers);
         }
-        [HttpGet]
         /// <summary>
         /// Single Map Marker Entry
         /// </summary>
         /// <param name="id">Map Marker ID</param>
         /// <returns>All fields on one Map Marker</returns>
+        [HttpGet]
         public ActionResult Details(
             long id
         )
