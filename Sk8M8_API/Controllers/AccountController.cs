@@ -32,6 +32,24 @@ namespace Sk8M8_API.Controllers
                 return BadRequest(ModelState);
             }
 
+            if ( Context.Client.Any(x => x.Username == client.Username) )
+            {
+                return Json(new Resources.ResultResource()
+                {
+                    Success = false,
+                    Msg = $"Username {client.Username} is already taken"
+                });
+            }
+            
+            if ( Context.Client.Any(x => x.Email == client.Email) )
+            {
+                return Json(new Resources.ResultResource()
+                {
+                    Success = false,
+                    Msg = $"{client.Email} is already in use"
+                });
+            }
+
             var clientRecord = new Client()
             {
                 Username = client.Username,
@@ -49,19 +67,6 @@ namespace Sk8M8_API.Controllers
                 new Resources.BaseResultResource() { Success = true }
             );
         }
-
-        [AcceptVerbs("GET", "POST")]
-        public IActionResult VerifyUsernameUniqueness(string username)
-        {
-            return Context.Client.Any(x => x.Username == username) ? Json("Username already in use") : Json(true);
-        }
-
-        [AcceptVerbs("GET", "POST")]
-        public IActionResult VerifyEmailUniqueness(string email)
-        {
-            return Context.Client.Any(x => x.Email == email) ? Json("Email already in use") : Json(true);
-        }
-        
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Login([FromBody] Client Client)
