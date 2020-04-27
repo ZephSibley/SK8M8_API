@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Sk8M8_API.Controllers
 {
@@ -63,7 +64,7 @@ namespace Sk8M8_API.Controllers
                     });
                 }
 
-                Context.Media.Add(markerVideoRecord);
+                await Context.Media.AddAsync(markerVideoRecord);
             }
 
             var newMarkerRecord = new MapMarker()
@@ -74,24 +75,23 @@ namespace Sk8M8_API.Controllers
                 Video = markerVideoRecord,
                 Creator = relevantUser,
             };
-            Context.MapMarker.Add(newMarkerRecord);
-
             var newMarkerCategoriesRecord = new MarkerCategory()
             {
                 LocationType = relevantCategory,
                 MapMarker = newMarkerRecord,
             };
-            Context.MarkerCategory.Add(newMarkerCategoriesRecord);
-
             var newClientMarkersRecord = new ClientMarker()
             {
                 User = relevantUser,
                 MapMarker = newMarkerRecord,
             };
-            Context.ClientMarker.Add(newClientMarkersRecord);
-
-            Context.SaveChanges();
-
+            var one = Context.ClientMarker.AddAsync(newClientMarkersRecord);
+            var two = Context.MarkerCategory.AddAsync(newMarkerCategoriesRecord);
+            var three = Context.MapMarker.AddAsync(newMarkerRecord);
+            await one;
+            await two;
+            await three;
+            await Context.SaveChangesAsync();
             return Json(
                 new Resources.BaseResultResource() { Success = true }
             );
