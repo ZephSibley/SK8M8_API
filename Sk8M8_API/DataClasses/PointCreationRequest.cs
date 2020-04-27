@@ -7,7 +7,7 @@ namespace Sk8M8_API.DataClasses
     public class PointCreationRequest
     {
         [Required]
-        [StringLength(50, ErrorMessage = "Name length can't be more than 20 characters.")]
+        [StringLength(50, ErrorMessage = "Name length can't be more than 50 characters.")]
         public string Name { get; set; }
 
         [Required]
