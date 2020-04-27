@@ -16,7 +16,7 @@ namespace Sk8M8_API.Tests
         [Fact]
         public void CheckingValid()
         {
-            var testString = "test string two";
+            const string testString = "test string two";
 
             var password = Services.PasswordService.HashPassword(testString);
             Assert.IsType<string>(password);
