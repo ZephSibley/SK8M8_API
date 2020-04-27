@@ -21,10 +21,7 @@ namespace Sk8M8_API.Controllers
         /// <summary>
         /// Create a Map Marker
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="Latitude"></param>
-        /// <param name="Longitude"></param>
+        /// <param name="marker"></param>
         /// <returns>Success Json object</returns>
         [HttpPost]
         public async Task<ActionResult> Create(
