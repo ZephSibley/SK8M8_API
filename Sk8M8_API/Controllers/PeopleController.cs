@@ -12,15 +12,15 @@ namespace Sk8M8_API.Controllers
             Context = context;
         }
         public ActionResult Find(
-            double Latitude,
-            double Longitude,
-            double Radius
+            double latitude,
+            double longitude,
+            double radius
         )
         {
-            var currentLocation = StorageUtils.CreateGeoPoint(Latitude, Longitude);
+            var currentLocation = StorageUtils.CreateGeoPoint(latitude, longitude);
 
             var discoveredPeople = Context.Client
-                .Where(row => row.Geolocation.IsWithinDistance(currentLocation, Radius))
+                .Where(row => row.Geolocation.IsWithinDistance(currentLocation, radius))
                 .Select(row => new { row.Avatar, row.Username, row.Status })
                 .ToList();
 
