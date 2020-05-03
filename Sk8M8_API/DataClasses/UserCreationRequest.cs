@@ -9,7 +9,7 @@ namespace Sk8M8_API.DataClasses
         public string Username { get; set; }
 
         [Required]
-        [StringLength(101, ErrorMessage = "Password is too long", MinimumLength = 6)]
+        [StringLength(9999, ErrorMessage = "Password is too short", MinimumLength = 6)]
         public string Password { get; set; }
 
         [Required]
