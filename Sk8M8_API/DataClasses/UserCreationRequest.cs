@@ -5,7 +5,7 @@ namespace Sk8M8_API.DataClasses
     public class UserCreationRequest
     {
         [Required]
-        [StringLength(15, ErrorMessage = "Username is too long")]
+        [StringLength(26, ErrorMessage = "Username is too long")]
         public string Username { get; set; }
 
         [Required]
