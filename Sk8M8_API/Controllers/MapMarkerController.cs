@@ -39,10 +39,12 @@ namespace Sk8M8_API.Controllers
                 );
                 return BadRequest(errorMessages);
             }
+            
+            var relevantCategory = Context.LocationType.FirstOrDefault(x => x.Name == marker.Category);
+            if (relevantCategory == null) { return BadRequest("Invalid location category"); }
 
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
             var relevantUser = Context.Client.FirstOrDefault<Client>(x => x.Id == Convert.ToInt64(userClaim));
-            var relevantCategory = Context.LocationType.FirstOrDefault<LocationType>(x => x.Name == marker.Category);
 
             var markerPoint = StorageUtils.CreateGeoPoint(marker.Latitude, marker.Longitude);
             var proximityCheck = Context.MapMarker
