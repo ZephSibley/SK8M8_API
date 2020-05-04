@@ -44,23 +44,16 @@ namespace Sk8M8_API.Controllers
                 .Any(row => row.Point.IsWithinDistance(markerPoint, 0.0005));
             if (proximityCheck)
             {
-                return Json(new
-                {
-                    success = false,
-                    msg = "Could not create: Too close to another marker."
-                });
+                return BadRequest("Could not create: Too close to another marker.");
             }
 
             Media markerVideoRecord = null;
             if (marker.Video != null)
             {
                 markerVideoRecord = await CreateMediaRecordForVideo(marker.Video, relevantUser);
-                if (markerVideoRecord == null) 
+                if (markerVideoRecord == null)
                 {
-                    return Json(new Resources.ResultResource() {
-                        Success = false,
-                        Msg = "Video processing failed"
-                    });
+                    return BadRequest("Video processing failed");
                 }
 
                 await Context.Media.AddAsync(markerVideoRecord);

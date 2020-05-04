@@ -34,20 +34,12 @@ namespace Sk8M8_API.Controllers
 
             if ( Context.Client.Any(x => x.Username == client.Username) )
             {
-                return Json(new Resources.ResultResource()
-                {
-                    Success = false,
-                    Msg = $"Username {client.Username} is already taken"
-                });
+                return BadRequest($"Username {client.Username} is already taken");
             }
             
             if ( Context.Client.Any(x => x.Email == client.Email) )
             {
-                return Json(new Resources.ResultResource()
-                {
-                    Success = false,
-                    Msg = $"{client.Email} is already in use"
-                });
+                return BadRequest($"{client.Email} is already in use");
             }
 
             var clientRecord = new Client()
@@ -151,9 +143,7 @@ namespace Sk8M8_API.Controllers
                     tempFile.Delete();
                 }
 
-                return Json(
-                    new Resources.BaseResultResource() { Success = false }
-                );
+                return BadRequest();
             }
 
             var fileName = await StorageUtils.StoreFile(tempFile.StripExif());
