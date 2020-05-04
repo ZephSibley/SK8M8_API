@@ -29,7 +29,12 @@ namespace Sk8M8_API.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errorMessages = ModelState.SelectMany(
+                    item => item.Value.Errors.Select(
+                        error => error.ErrorMessage
+                        )
+                    );
+                return BadRequest(errorMessages);
             }
 
             if ( Context.Client.Any(x => x.Username == client.Username) )
@@ -104,7 +109,12 @@ namespace Sk8M8_API.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errorMessages = ModelState.SelectMany(
+                    item => item.Value.Errors.Select(
+                        error => error.ErrorMessage
+                    )
+                );
+                return BadRequest(errorMessages);
             }
             
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
@@ -163,7 +173,12 @@ namespace Sk8M8_API.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errorMessages = ModelState.SelectMany(
+                    item => item.Value.Errors.Select(
+                        error => error.ErrorMessage
+                    )
+                );
+                return BadRequest(errorMessages);
             }
 
             var userClaim = User.FindFirstValue(ClaimTypes.Name);

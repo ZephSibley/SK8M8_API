@@ -32,7 +32,12 @@ namespace Sk8M8_API.Controllers
             Contract.Requires(marker != null);
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errorMessages = ModelState.SelectMany(
+                    item => item.Value.Errors.Select(
+                        error => error.ErrorMessage
+                    )
+                );
+                return BadRequest(errorMessages);
             }
 
             var userClaim = User.FindFirstValue(ClaimTypes.Name);
