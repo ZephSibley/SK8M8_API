@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sk8M8_API.Controllers
 {
@@ -141,6 +142,7 @@ namespace Sk8M8_API.Controllers
         /// <param name="Longitude"></param>
         /// <param name="Radius"></param>
         /// <returns>List of MapMarker IDs and Coords</returns>
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Find(
             double Latitude,
