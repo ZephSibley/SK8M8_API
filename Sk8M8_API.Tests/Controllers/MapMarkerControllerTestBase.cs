@@ -36,14 +36,15 @@ namespace Sk8M8_API.Tests.Controllers
                 Status = null,
                 Geolocation = point
             };
+            context.Client.Add(clientRecord);
             var markerRecord = new MapMarker()
             {
                 Name = "Place",
                 LocationCategory = "SkatePark",
                 Video = null,
-                Point = point
+                Point = point,
+                Creator = clientRecord
             };
-            context.Client.Add(clientRecord);
             context.MapMarker.Add(markerRecord);
             context.SaveChanges();
         }
