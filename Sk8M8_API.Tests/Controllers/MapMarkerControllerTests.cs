@@ -27,6 +27,9 @@ namespace Sk8M8_API.Tests.Controllers
 
             var controller = new MapMarkerController(context);
             var findResult =  controller.Find(Latitude, Longitude, 10) as JsonResult;
+            
+            Assert.NotNull(findResult);
+            
             var parsedResult =
                 JsonConvert.DeserializeObject<List<dynamic>>(JsonConvert.SerializeObject(findResult.Value))[0];
             
