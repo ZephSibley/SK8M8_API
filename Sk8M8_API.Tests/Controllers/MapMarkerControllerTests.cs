@@ -37,5 +37,20 @@ namespace Sk8M8_API.Tests.Controllers
             Assert.Equal<double>(Latitude, parsedResult.coords[0].Value);
             Assert.Equal<double>(Longitude, parsedResult.coords[1].Value);
         }
+        [Fact]
+        public void GetLocationTypes()
+        {
+            using var context = new SkateContext(ContextOptions);
+
+            var controller = new MapMarkerController(context);
+            var findResult =  controller.LocationTypes() as JsonResult;
+            
+            Assert.NotNull(findResult);
+            
+            var parsedResult =
+                JsonConvert.DeserializeObject<List<dynamic>>(JsonConvert.SerializeObject(findResult.Value));
+
+            Assert.Equal("SkatePark", parsedResult[0]);
+        }
     }
 }
