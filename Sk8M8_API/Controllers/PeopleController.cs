@@ -11,7 +11,7 @@ namespace Sk8M8_API.Controllers
         {
             Context = context;
         }
-        public ActionResult Find(
+        public IActionResult Find(
             double latitude,
             double longitude,
             double radius
