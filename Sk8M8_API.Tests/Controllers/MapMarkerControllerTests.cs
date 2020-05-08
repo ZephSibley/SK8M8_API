@@ -49,7 +49,8 @@ namespace Sk8M8_API.Tests.Controllers
             
             var parsedResult =
                 JsonConvert.DeserializeObject<List<dynamic>>(JsonConvert.SerializeObject(findResult.Value));
-
+            
+            Assert.NotEmpty(parsedResult);
             Assert.Equal("SkatePark", parsedResult[0]);
         }
     }
