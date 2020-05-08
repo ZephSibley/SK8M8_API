@@ -138,22 +138,22 @@ namespace Sk8M8_API.Controllers
         /// <summary>
         /// Finds all Map Markers within a radius to the given LatLong
         /// </summary>
-        /// <param name="Latitude"></param>
-        /// <param name="Longitude"></param>
-        /// <param name="Radius"></param>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <param name="radius"></param>
         /// <returns>List of MapMarker IDs and Coords</returns>
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult Find(
-            double Latitude,
-            double Longitude,
-            double Radius
+        public IActionResult Find(
+            double latitude,
+            double longitude,
+            double radius
         )
         {
-            var currentLocation = StorageUtils.CreateGeoPoint(Latitude, Longitude);
+            var currentLocation = StorageUtils.CreateGeoPoint(latitude, longitude);
 
             var discoveredMarkers = Context.MapMarker
-                .Where(row => row.Point.IsWithinDistance(currentLocation, Radius))
+                .Where(row => row.Point.IsWithinDistance(currentLocation, radius))
                 .Select(row => new { row.Id, coords = new double[] { row.Point.Coordinate.X, row.Point.Coordinate.Y } })
                 .ToList();
             //.OrderBy(c => c.Location.Distance(currentLocation))
