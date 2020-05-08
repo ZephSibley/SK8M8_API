@@ -33,6 +33,7 @@ namespace Sk8M8_API.Tests.Controllers
             var parsedResult =
                 JsonConvert.DeserializeObject<List<dynamic>>(JsonConvert.SerializeObject(findResult.Value))[0];
             
+            Assert.NotEmpty(parsedResult);
             Assert.Equal<long>(1, parsedResult.Id.Value);
             Assert.Equal<double>(Latitude, parsedResult.coords[0].Value);
             Assert.Equal<double>(Longitude, parsedResult.coords[1].Value);
