@@ -184,13 +184,5 @@ namespace Sk8M8_API.Controllers
 
             return Json(locationTypes);
         }
-        [HttpPost]
-        public ActionResult VerifyLocationType(string locationType)
-        {
-            var relevantCategory = Context.LocationType.First<LocationType>(x => x.Name == locationType);
-            if (relevantCategory == null) { return Json($"Location type \"{locationType}\" not recognised."); }
-
-            return Json(true);
-        }
     }
 }

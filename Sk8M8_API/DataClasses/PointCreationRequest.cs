@@ -11,7 +11,6 @@ namespace Sk8M8_API.DataClasses
         public string Name { get; set; }
 
         [Required]
-        [Remote(action: "VerifyLocationType", controller: "MapMarker")]
         public string Category { get; set; }
 
         [Required]
