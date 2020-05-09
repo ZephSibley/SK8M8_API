@@ -1,4 +1,6 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System.Collections;
+using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 
 namespace Sk8M8_API.Models
 {
@@ -10,5 +12,6 @@ namespace Sk8M8_API.Models
         public string Email { get; set; }
         public string Avatar { get; set; }
         public string Status { get; set; }
+        public ICollection<ClientMarkerStar> ClientMarkerStars { get; set; }
     }
 }

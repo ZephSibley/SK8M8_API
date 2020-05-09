@@ -19,6 +19,7 @@ namespace Sk8M8_API.Models
         public DbSet<MediaRating> MediaRating { get; set; }
         public DbSet<MarkerCategory> MarkerCategory { get; set; }
         public DbSet<ClientMarker> ClientMarker { get; set; }
+        public DbSet<ClientMarkerStar> ClientMarkerStar { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +32,17 @@ namespace Sk8M8_API.Models
                new LocationType { Id = 6, Name = "Dirt track"},
                new LocationType { Id = 7, Name = "Skate path"}
             );
+
+            modelBuilder.Entity<ClientMarkerStar>()
+                .HasKey(cms => new {cms.ClientId, cms.MapMarkerId});
+            modelBuilder.Entity<ClientMarkerStar>()
+                .HasOne(cms => cms.Client)
+                .WithMany(c => c.ClientMarkerStars)
+                .HasForeignKey(cms => cms.ClientId);
+            modelBuilder.Entity<ClientMarkerStar>()
+                .HasOne(cms => cms.MapMarker)
+                .WithMany(m => m.ClientMarkerStars)
+                .HasForeignKey(cms => cms.MapMarkerId);
 
             modelBuilder.Entity<MapMarker>()
                 .HasIndex(m => m.Point);

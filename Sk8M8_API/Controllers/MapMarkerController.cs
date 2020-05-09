@@ -170,7 +170,14 @@ namespace Sk8M8_API.Controllers
         )
         {
             var markerDetail = Context.MapMarker
-                .Select(row => new { row.Id, row.Name, row.LocationCategory, row.Creator.Username })
+                .Select(row => new
+                {
+                    row.Id,
+                    row.Name,
+                    row.LocationCategory,
+                    row.Creator.Username,
+                    row.ClientMarkerStars.Count
+                })
                 .FirstOrDefault(row => row.Id == id);
 
             return Json(markerDetail);
@@ -183,6 +190,31 @@ namespace Sk8M8_API.Controllers
                 .ToList();
 
             return Json(locationTypes);
+        }
+        [HttpPost]
+        public IActionResult StarMarker(
+            [FromQuery]
+            int markerId
+        )
+        {
+            var userClaim = Convert.ToInt64(User.FindFirstValue(ClaimTypes.Name));
+            
+            var hasStarred = Context.ClientMarkerStar.Any(
+                x => x.ClientId == userClaim && x.MapMarkerId == markerId
+            );
+            if (hasStarred) { return BadRequest("You already did that"); }
+            
+            var newStar = new ClientMarkerStar
+            {
+                ClientId = userClaim,
+                MapMarkerId = markerId,
+            };
+
+            Context.ClientMarkerStar.Add(newStar);
+            Context.SaveChanges();
+            return Json(
+                new Resources.BaseResultResource() {Success = true}
+            );
         }
     }
 }
