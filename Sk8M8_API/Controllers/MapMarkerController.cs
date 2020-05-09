@@ -192,7 +192,7 @@ namespace Sk8M8_API.Controllers
             return Json(locationTypes);
         }
         [HttpPost]
-        public IActionResult StarMarker(
+        public async Task<IActionResult> StarMarker(
             [FromQuery]
             int markerId
         )
@@ -210,8 +210,8 @@ namespace Sk8M8_API.Controllers
                 MapMarkerId = markerId,
             };
 
-            Context.ClientMarkerStar.Add(newStar);
-            Context.SaveChanges();
+            await Context.ClientMarkerStar.AddAsync(newStar);
+            await Context.SaveChangesAsync();
             return Json(
                 new Resources.BaseResultResource() {Success = true}
             );
