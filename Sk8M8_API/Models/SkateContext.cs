@@ -32,6 +32,13 @@ namespace Sk8M8_API.Models
                new LocationType { Id = 7, Name = "Skate path"}
             );
 
+            modelBuilder.Entity<MapMarker>()
+                .HasIndex(m => m.Point);
+            
+            modelBuilder.Entity<Client>()
+                .HasIndex(u => u.Id);
+            modelBuilder.Entity<Client>()
+                .HasIndex(u => u.Geolocation);
             modelBuilder.Entity<Client>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
