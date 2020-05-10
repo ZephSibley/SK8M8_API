@@ -176,7 +176,7 @@ namespace Sk8M8_API.Controllers
                     row.Name,
                     row.LocationCategory,
                     row.Creator.Username,
-                    row.ClientMarkerStars.Count
+                    starCount = row.ClientMarkerStars.Count
                 })
                 .FirstOrDefault(row => row.Id == id);
 
