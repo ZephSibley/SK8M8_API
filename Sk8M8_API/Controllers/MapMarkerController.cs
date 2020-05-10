@@ -169,6 +169,10 @@ namespace Sk8M8_API.Controllers
             long id
         )
         {
+            var userId = Convert.ToInt64(User.FindFirstValue(ClaimTypes.Name));
+            
+            var hasStarred = HasStarred(id, userId);
+            
             var markerDetail = Context.MapMarker
                 .Select(row => new
                 {
@@ -176,7 +180,8 @@ namespace Sk8M8_API.Controllers
                     row.Name,
                     row.LocationCategory,
                     row.Creator.Username,
-                    starCount = row.ClientMarkerStars.Count
+                    starCount = row.ClientMarkerStars.Count,
+                    hasStarred
                 })
                 .FirstOrDefault(row => row.Id == id);
 
@@ -197,16 +202,14 @@ namespace Sk8M8_API.Controllers
             int markerId
         )
         {
-            var userClaim = Convert.ToInt64(User.FindFirstValue(ClaimTypes.Name));
+            var userId = Convert.ToInt64(User.FindFirstValue(ClaimTypes.Name));
             
-            var hasStarred = Context.ClientMarkerStar.Any(
-                x => x.ClientId == userClaim && x.MapMarkerId == markerId
-            );
+            var hasStarred = HasStarred(markerId, userId);
             if (hasStarred) { return BadRequest("You already did that"); }
             
             var newStar = new ClientMarkerStar
             {
-                ClientId = userClaim,
+                ClientId = userId,
                 MapMarkerId = markerId,
             };
 
@@ -233,6 +236,15 @@ namespace Sk8M8_API.Controllers
             await Context.SaveChangesAsync();
             return Json(
                 new Resources.BaseResultResource() {Success = true}
+            );
+        }
+        private bool HasStarred(
+            long markerId,
+            long userId
+        )
+        {
+            return Context.ClientMarkerStar.Any(
+                x => x.ClientId == userId && x.MapMarkerId == markerId
             );
         }
     }
