@@ -216,5 +216,24 @@ namespace Sk8M8_API.Controllers
                 new Resources.BaseResultResource() {Success = true}
             );
         }
+        [HttpDelete]
+        public async Task<IActionResult> UnstarMarker(
+            [FromQuery]
+            int markerId
+        )
+        {
+            var userClaim = Convert.ToInt64(User.FindFirstValue(ClaimTypes.Name));
+
+            var star = Context.ClientMarkerStar.FirstOrDefault(
+                x => x.ClientId == userClaim && x.MapMarkerId == markerId);
+            if (star == null) { return BadRequest("You already did that"); }
+
+            Context.ClientMarkerStar.Remove(star);
+
+            await Context.SaveChangesAsync();
+            return Json(
+                new Resources.BaseResultResource() {Success = true}
+            );
+        }
     }
 }
