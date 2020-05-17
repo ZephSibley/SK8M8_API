@@ -30,7 +30,10 @@ namespace Sk8M8_API.Models
                new LocationType { Id = 4, Name = "Plaza" },
                new LocationType { Id = 5, Name = "Pump track"},
                new LocationType { Id = 6, Name = "Dirt track"},
-               new LocationType { Id = 7, Name = "Skate path"}
+               new LocationType { Id = 7, Name = "Skate path"},
+               new LocationType { Id = 8, Name = "Ledge"},
+               new LocationType { Id = 9, Name = "Stairset"},
+               new LocationType { Id = 10, Name = "Manny Pad"}
             );
 
             modelBuilder.Entity<ClientMarkerStar>()
