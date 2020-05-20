@@ -7,6 +7,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Sk8M8_API.DataClasses;
 
 namespace Sk8M8_API.Controllers
 {
@@ -90,6 +91,26 @@ namespace Sk8M8_API.Controllers
             }
 
             return StatusCode(401);
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(
+            [FromBody]
+            ChangePasswordRequest req
+        )
+        {
+            var userClaim = User.FindFirstValue(ClaimTypes.Name); 
+            var relevantUser = Context.Client.FirstOrDefault(x => x.Id == Convert.ToInt64(userClaim));
+            
+            var oldPasswordVerified = Services.PasswordService.CheckPassword(req.OldPassword, relevantUser.Password);
+            if (oldPasswordVerified != Enums.ValidatePasswordStatus.Valid) return Unauthorized();
+            
+            relevantUser.Password = Services.PasswordService.HashPassword(req.Password);
+            Context.Client.Update(relevantUser);
+            Context.SaveChangesAsync();
+            return Json(
+                new Resources.BaseResultResource { Success = true}
+            );
         }
         [HttpGet]
         public ActionResult Me()

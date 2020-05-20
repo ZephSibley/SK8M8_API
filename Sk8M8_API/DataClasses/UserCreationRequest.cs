@@ -2,15 +2,11 @@
 
 namespace Sk8M8_API.DataClasses
 {
-    public class UserCreationRequest
+    public class UserCreationRequest : ClientPasswordRequest
     {
         [Required]
         [StringLength(26, ErrorMessage = "Username is too long")]
         public string Username { get; set; }
-
-        [Required]
-        [StringLength(9999, ErrorMessage = "Password is too short", MinimumLength = 6)]
-        public string Password { get; set; }
 
         [Required]
         [EmailAddress]
